@@ -2,6 +2,16 @@ Minor updates involving cosmetic changes have been omitted from this list.
 
 See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
+## Version 10.12 - 2025/02/13
+
+* Bugfixes
+    * `PrimitiveIntegerValidator.isNotEqualTo()` and `PrimitiveUnsignedIntegerValidator.isNotEqualTo()` were
+      validating the opposite conditions that they were supposed to.
+* Added `JsonNodeValidator.size()`.
+* Warn the user if they invoke `DefaultJavaValidators.requireThat()` on a Jackson type instead of
+  `DefaultJacksonValidators.requireThat()`.
+* Added a dependency on SLF4J.
+
 ## Version 10.10 - 2025/01/18
 
 * `JacksonValidator`: improved diffs by sorting object keys.

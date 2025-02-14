@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.node.NumericNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
+import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.component.ObjectComponent;
 import com.github.cowwoc.requirements10.java.validator.component.ValidatorComponent;
 
@@ -37,6 +38,14 @@ public interface JsonNodeValidator<T extends JsonNode> extends
 	 * @throws IllegalArgumentException if the node does not contain the property
 	 */
 	JsonNodeValidator<JsonNode> property(String name);
+
+	/**
+	 * Returns a validator over the node's {@link JsonNode#size() size}.
+	 *
+	 * @return a validator over the node's {@link JsonNode#size() size}
+	 * @throws NullPointerException if the value is null
+	 */
+	PrimitiveUnsignedIntegerValidator size();
 
 	/**
 	 * Ensures that the node contains a {@code Number}.

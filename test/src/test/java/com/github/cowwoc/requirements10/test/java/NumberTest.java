@@ -42,6 +42,58 @@ public final class NumberTest
 	}
 
 	@Test
+	public void isEqualTo()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			int actual = 0;
+			int expected = 0;
+			validators.requireThat(actual, "actual").isEqualTo(expected);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEqualTo_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			int actual = 0;
+			int expected = 1;
+			validators.requireThat(actual, "actual").isEqualTo(expected);
+		}
+	}
+
+	@Test
+	public void isNotEqualTo()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			int actual = 0;
+			int expected = 1;
+			validators.requireThat(actual, "actual").isNotEqualTo(expected);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotEqualTo_False()
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			int actual = 0;
+			int expected = 0;
+			validators.requireThat(actual, "actual").isNotEqualTo(expected);
+		}
+	}
+
+	@Test
 	public void isBetween_actualIsLowerBound()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))

@@ -1,6 +1,5 @@
   # Third-party dependencies
   * Apache License, Version 2.0:
-    * [jcommander](https://jcommander.org)
     * [Jackson-annotations](https://github.com/FasterXML/jackson)
     * [Jackson-core](https://github.com/FasterXML/jackson-core)
     * [jackson-databind](https://github.com/FasterXML/jackson)
@@ -19,6 +18,7 @@
     * [Byte Buddy (without dependencies)](https://bytebuddy.net/byte-buddy)
     * [Apache Commons Math](http://commons.apache.org/proper/commons-math/)
     * [AssertJ Core](https://assertj.github.io/doc/#assertj-core)
+    * [jcommander](https://jcommander.org)
     * [testng](https://testng.org)
   * Eclipse Public License (EPL), Version 1.0:
     * [Logback Classic Module](http://logback.qos.ch/logback-classic)

@@ -1035,8 +1035,7 @@ public final class ArrayTest
 				{
 					"element"
 				};
-			validators.requireThat(actual, "actual").length().
-				isNotEqualTo(2, "expectedName");
+			validators.requireThat(actual, "actual").length().isNotEqualTo(2, "expectedName");
 		}
 	}
 
