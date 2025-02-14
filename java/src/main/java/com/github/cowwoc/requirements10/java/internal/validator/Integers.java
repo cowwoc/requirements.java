@@ -108,7 +108,7 @@ final class Integers<S>
 
 	private S isNotEqualToImpl(int unwanted, String name)
 	{
-		if (validator.value.validationFailed(v -> v == unwanted))
+		if (validator.value.validationFailed(v -> v != unwanted))
 		{
 			validator.addIllegalArgumentException(
 				ValidatorMessages.isNotEqualToFailed(validator, name, unwanted).toString());

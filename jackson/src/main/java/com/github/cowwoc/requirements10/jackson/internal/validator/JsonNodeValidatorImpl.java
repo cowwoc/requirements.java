@@ -20,8 +20,11 @@ import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 import com.github.cowwoc.requirements10.java.ValidationFailure;
 import com.github.cowwoc.requirements10.java.internal.Configuration;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
+import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
 import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.internal.validator.AbstractObjectValidator;
+import com.github.cowwoc.requirements10.java.internal.validator.ObjectSizeValidatorImpl;
+import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
 
 import java.util.List;
 import java.util.Map;
@@ -65,6 +68,14 @@ public final class JsonNodeValidatorImpl<T extends JsonNode>
 		}
 		return new JsonNodeValidatorImpl<>(scope, configuration, this.name + "." + name, newValue, context,
 			failures);
+	}
+
+	@Override
+	public PrimitiveUnsignedIntegerValidator size()
+	{
+		failOnNull();
+		return new ObjectSizeValidatorImpl(scope, configuration, this, name + ".size()",
+			value.nullToInvalid().map(JsonNode::size), Pluralizer.ELEMENT, context, failures);
 	}
 
 	@Override
