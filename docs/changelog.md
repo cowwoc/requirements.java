@@ -2,6 +2,19 @@ Minor updates involving cosmetic changes have been omitted from this list.
 
 See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
+## Version 11.0 - 2025/02/18
+
+* Renamed artifact `root` to `requirements`.
+* Renamed artifact `annotation` to `requirements-annotation`.
+* Renamed artifact `benchmark` to `requirements-benchmark`.
+* Renamed artifact `benchmark.assertj` to `requirements-benchmark-assertj`.
+* Renamed artifact `benchmark.guava` to `requirements-benchmark-guava`.
+* Renamed artifact `benchmark.java` to `requirements-benchmark-java`.
+* Renamed artifact `guava` to `requirements-guava`.
+* Renamed artifact `jackson` to `requirements-jackson`.
+* Renamed artifact `java` to `requirements-java`.
+* Renamed artifact `test` to `requirements-test`.
+
 ## Version 10.12 - 2025/02/13
 
 * Bugfixes

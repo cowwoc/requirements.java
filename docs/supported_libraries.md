@@ -19,7 +19,7 @@ For example,
 ```
 <dependency>
   <groupId>com.github.cowwoc.requirements</groupId>
-  <artifactId>guava</artifactId>
+  <artifactId>requirements-guava</artifactId>
   <version>${requirements.version}</version>
 </dependency>
 ```
