@@ -173,7 +173,7 @@ See the [API documentation](https://cowwoc.github.io/requirements.java/10.12/) f
 This library supports the following third-party libraries and tools:
 
 * [guava](docs/supported_libraries.md)
-  * [IntelliJ IDEA](docs/supported_tools.md)
+* [IntelliJ IDEA](docs/supported_tools.md)
 
 ## Licenses
 
