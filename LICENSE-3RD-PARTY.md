@@ -3,7 +3,7 @@
     * [Jackson-annotations](https://github.com/FasterXML/jackson)
     * [Jackson-core](https://github.com/FasterXML/jackson-core)
     * [jackson-databind](https://github.com/FasterXML/jackson)
-    * [core](https://github.com/cowwoc/pouch/core/)
+    * [pouch-core](https://github.com/cowwoc/pouch/pouch-core/)
     * [annotation](https://github.com/cowwoc/requirements.java/annotation/)
     * [guava](https://github.com/cowwoc/requirements.java/guava/)
     * [jackson](https://github.com/cowwoc/requirements.java/jackson/)

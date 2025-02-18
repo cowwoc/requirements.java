@@ -22,7 +22,7 @@ To get started, add this Maven dependency:
 <dependency>
   <groupId>com.github.cowwoc.requirements</groupId>
   <artifactId>java</artifactId>
-  <version>10.12</version>
+  <version>11.0</version>
 </dependency>
 ```
 
