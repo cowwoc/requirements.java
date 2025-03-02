@@ -71,7 +71,7 @@ jobs:
           ./mvnw release:prepare --batch-mode -V -e
           TAG=$(git describe --tag --abbrev=0)
           echo "TAG=${TAG}" >> "$GITHUB_OUTPUT"
-          echo "VERSION=${TAG#"release-"}" >> "$GITHUB_OUTPUT"
+          echo "VERSION=${TAG#\"release-\"}" >> "$GITHUB_OUTPUT"
 
       - name: Look up staging profile id
         id: request-profile-id
