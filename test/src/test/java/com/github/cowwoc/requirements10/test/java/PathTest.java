@@ -17,6 +17,7 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Set;
 
 import static com.github.cowwoc.requirements10.java.TerminalEncoding.NONE;
 
@@ -206,6 +207,38 @@ public final class PathTest
 	}
 
 	@Test
+	public void isExecutable() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path actual = Files.createTempFile(null, null);
+			try
+			{
+				validators.requireThat(actual, "actual").isExecutable();
+			}
+			finally
+			{
+				Files.delete(actual);
+			}
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isExecutable_actualIsMissing() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path actual = Files.createTempFile(null, null);
+			Files.delete(actual);
+			validators.requireThat(actual, "actual").isExecutable();
+		}
+	}
+
+	@Test
 	public void isRelative()
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
@@ -254,20 +287,156 @@ public final class PathTest
 	}
 
 	@Test
-	public void contains()
+	public void isEmpty() throws IOException
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidators validators = TestValidators.of(scope);
 
-			Path actual = Paths.get(new File("/paths1/path2").toURI());
-			Path child = actual.resolve("child");
-			validators.requireThat(actual, "actual").contains(child);
+			Path parent = Files.createTempDirectory("");
+			try
+			{
+				validators.requireThat(parent, "parent").isEmpty();
+			}
+			finally
+			{
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isEmpty_False() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child = parent.resolve("child");
+			Files.createDirectory(child);
+			try
+			{
+				validators.requireThat(parent, "parent").isEmpty();
+			}
+			finally
+			{
+				Files.delete(child);
+				Files.delete(parent);
+			}
 		}
 	}
 
 	@Test
-	public void currentDirectoryContainsSubDirectory()
+	public void isNotEmpty() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child = parent.resolve("child");
+			Files.createDirectory(child);
+			try
+			{
+				validators.requireThat(parent, "parent").isNotEmpty();
+			}
+			finally
+			{
+				Files.delete(child);
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void isNotEmpty_False() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			try
+			{
+				validators.requireThat(parent, "parent").isNotEmpty();
+			}
+			finally
+			{
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test
+	public void contains() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child = parent.resolve("child");
+			Files.createDirectory(child);
+			try
+			{
+				validators.requireThat(parent, "parent").contains(child);
+			}
+			finally
+			{
+				Files.delete(child);
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void contains_False() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child1 = Files.createDirectory(parent.resolve("child1"));
+			Path child2 = Files.createDirectory(parent.resolve("child2"));
+			try
+			{
+				validators.requireThat(child1, "child1").contains(child2);
+			}
+			finally
+			{
+				Files.delete(child2);
+				Files.delete(child1);
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void contains_descendants() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+			Path ancestor = Files.createTempDirectory("");
+			Path child = Files.createDirectory(ancestor.resolve("child"));
+			Path descendant = Files.createDirectory(child.resolve("descendant"));
+			try
+			{
+				validators.requireThat(ancestor, "ancestor").contains(descendant);
+			}
+			finally
+			{
+				Files.delete(descendant);
+				Files.delete(child);
+				Files.delete(ancestor);
+			}
+		}
+	}
+
+	@Test
+	public void currentDirectoryContainsSubDirectory() throws IOException
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
@@ -275,20 +444,345 @@ public final class PathTest
 
 			Path actual = Path.of("");
 			Path child = actual.resolve("child");
-			validators.requireThat(actual, "actual").contains(child);
+			Files.createDirectory(child);
+			try
+			{
+				validators.requireThat(actual, "actual").contains(child);
+			}
+			finally
+			{
+				Files.delete(child);
+			}
 		}
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void contains_False()
+	@Test
+	public void doesNotContain() throws IOException
 	{
 		try (ApplicationScope scope = new TestApplicationScope(NONE))
 		{
 			TestValidators validators = TestValidators.of(scope);
 
-			Path actual = Paths.get("path1/path2");
-			Path other = actual.resolve("../other");
-			validators.requireThat(actual, "actual").contains(other);
+			Path parent = Files.createTempDirectory("");
+			try
+			{
+				Path child = parent.resolve("child");
+				validators.requireThat(parent, "parent").doesNotContain(child);
+			}
+			finally
+			{
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContain_False() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child = parent.resolve("child");
+			Files.createDirectory(child);
+			try
+			{
+				validators.requireThat(parent, "parent").doesNotContain(child);
+			}
+			finally
+			{
+				Files.delete(child);
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test
+	public void containsExactly() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child = parent.resolve("child");
+			Files.createFile(child);
+			try
+			{
+				validators.requireThat(parent, "parent").containsExactly(List.of(child));
+			}
+			finally
+			{
+				Files.delete(child);
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void containsExactly_False() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child1 = parent.resolve("child1");
+			Path child2 = parent.resolve("child2");
+			Files.createFile(child1);
+			Files.createFile(child2);
+			try
+			{
+				validators.requireThat(parent, "parent").containsExactly(List.of(child1));
+			}
+			finally
+			{
+				Files.delete(child1);
+				Files.delete(child2);
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test
+	public void doesNotContainExactly() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child1 = parent.resolve("child1");
+			Path child2 = parent.resolve("child2");
+			Files.createFile(child1);
+			Files.createFile(child2);
+			try
+			{
+				validators.requireThat(parent, "parent").doesNotContainExactly(List.of(child1));
+			}
+			finally
+			{
+				Files.delete(child1);
+				Files.delete(child2);
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainExactly_False() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child = parent.resolve("child");
+			Files.createFile(child);
+			try
+			{
+				validators.requireThat(parent, "parent").doesNotContainExactly(List.of(child));
+			}
+			finally
+			{
+				Files.delete(child);
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test
+	public void containsAny() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child1 = parent.resolve("child1");
+			Path child2 = parent.resolve("child2");
+			Files.createDirectory(child1);
+			try
+			{
+				Set<Path> children = Set.of(child1, child2);
+				validators.requireThat(parent, "parent").containsAny(children);
+			}
+			finally
+			{
+				Files.delete(child1);
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void containsAny_False() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			try
+			{
+				Path child1 = parent.resolve("child1");
+				Path child2 = parent.resolve("child2");
+
+				Set<Path> children = Set.of(child1, child2);
+				validators.requireThat(parent, "parent").containsAny(children);
+			}
+			finally
+			{
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test
+	public void doesNotContainAny() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			try
+			{
+				Path child1 = parent.resolve("child1");
+				Path child2 = parent.resolve("child2");
+
+				Set<Path> children = Set.of(child1, child2);
+				validators.requireThat(parent, "parent").doesNotContainAny(children);
+			}
+			finally
+			{
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainAny_False() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child1 = parent.resolve("child1");
+			Path child2 = parent.resolve("child2");
+			Files.createDirectory(child1);
+			try
+			{
+				Set<Path> children = Set.of(child1, child2);
+				validators.requireThat(parent, "parent").doesNotContainAny(children);
+			}
+			finally
+			{
+				Files.delete(child1);
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test
+	public void containsAll() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child1 = parent.resolve("child1");
+			Path child2 = parent.resolve("child2");
+			Files.createDirectory(child1);
+			Files.createDirectory(child2);
+			try
+			{
+				Set<Path> children = Set.of(child1, child2);
+				validators.requireThat(parent, "parent").containsAll(children);
+			}
+			finally
+			{
+				Files.delete(child1);
+				Files.delete(child2);
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void containsAll_False() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child1 = parent.resolve("child1");
+			Path child2 = parent.resolve("child2");
+			Files.createDirectory(child1);
+			try
+			{
+				Set<Path> children = Set.of(child1, child2);
+				validators.requireThat(parent, "parent").containsAll(children);
+			}
+			finally
+			{
+				Files.delete(child1);
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test
+	public void doesNotContainAll() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child1 = parent.resolve("child1");
+			Path child2 = parent.resolve("child2");
+			Files.createDirectory(child1);
+			try
+			{
+				Set<Path> children = Set.of(child1, child2);
+				validators.requireThat(parent, "parent").doesNotContainAll(children);
+			}
+			finally
+			{
+				Files.delete(child1);
+				Files.delete(parent);
+			}
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void doesNotContainAll_False() throws IOException
+	{
+		try (ApplicationScope scope = new TestApplicationScope(NONE))
+		{
+			TestValidators validators = TestValidators.of(scope);
+
+			Path parent = Files.createTempDirectory("");
+			Path child1 = parent.resolve("child1");
+			Path child2 = parent.resolve("child2");
+			Files.createDirectory(child1);
+			Files.createDirectory(child2);
+			try
+			{
+				Set<Path> children = Set.of(child1, child2);
+				validators.requireThat(parent, "parent").doesNotContainAll(children);
+			}
+			finally
+			{
+				Files.delete(child1);
+				Files.delete(child2);
+				Files.delete(parent);
+			}
 		}
 	}
 

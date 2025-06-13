@@ -6,6 +6,7 @@ import com.github.cowwoc.requirements10.jackson.validator.JsonNodeValidator;
 /**
  * Creates validators for the Jackson API that throw exceptions immediately on validation failure.
  */
+@FunctionalInterface
 public interface JacksonRequireThat
 {
 	/**

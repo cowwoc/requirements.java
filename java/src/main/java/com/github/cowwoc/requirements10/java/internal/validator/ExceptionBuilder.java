@@ -3,6 +3,7 @@ package com.github.cowwoc.requirements10.java.internal.validator;
 /**
  * Creates a new exception.
  */
+@FunctionalInterface
 public interface ExceptionBuilder
 {
 	/**

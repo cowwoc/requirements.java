@@ -124,7 +124,9 @@ public final class CollectionTest
 			TestValidators validators = TestValidators.of(scope);
 
 			Collection<String> actual = List.of("element");
-			List<String> expectedMessages = List.of("\"actual\" must contain null");
+			List<String> expectedMessages = List.of("""
+				"actual" must contain null.
+				actual: ["element"]""");
 			List<String> actualMessages = new TestValidatorsImpl(scope).checkIf(actual, "actual").
 				contains(null).elseGetFailures().getMessages();
 			validators.requireThat(actualMessages, "actualMessages").

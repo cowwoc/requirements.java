@@ -54,18 +54,18 @@
 	</modules>
 
 	<properties>
-		<rootBaseDir>${project.basedir}</rootBaseDir>
+		<project.root.basedir>${project.basedir}</project.root.basedir>
 		<!--		<license.verbose>true</license.verbose>-->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.version>3.9.9</maven.version>
 		<maven.compiler.release>21</maven.compiler.release>
-		<guava.version>33.4.0-jre</guava.version>
+		<guava.version>33.4.8-jre</guava.version>
 		<error_prone_annotations.version>2.26.1</error_prone_annotations.version>
-		<jackson.version>2.18.3</jackson.version>
+		<jackson.version>2.19.0</jackson.version>
 		<slf4j.version>2.0.17</slf4j.version>
 		<testng.version>7.11.0</testng.version>
 		<jmh.version>1.37</jmh.version>
-		<pmd.version>7.11.0</pmd.version>
+		<pmd.version>7.14.0</pmd.version>
 	</properties>
 
 	<dependencyManagement>
@@ -93,7 +93,7 @@
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-core</artifactId>
-				<version>3.9.9</version>
+				<version>3.9.10</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
@@ -118,12 +118,12 @@
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>1.5.17</version>
+				<version>1.5.18</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.javaparser</groupId>
 				<artifactId>javaparser-core</artifactId>
-				<version>3.26.3</version>
+				<version>3.26.4</version>
 			</dependency>
 			<dependency>
 				<groupId>io.github.java-diff-utils</groupId>
@@ -385,7 +385,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
-				<version>2.0.0</version>
+				<inherited>false</inherited>
 				<executions>
 					<execution>
 						<id>3rd-party-licenses</id>
@@ -398,7 +398,6 @@
 							<thirdPartyFilename>LICENSE-3RD-PARTY.md</thirdPartyFilename>
 							<fileTemplate>${basedir}/licenses/format.ftl</fileTemplate>
 							<missingFile>${basedir}/licenses/missing.txt</missingFile>
-							<overrideUrl>file:${basedir}/licenses/override.txt</overrideUrl>
 							<licenseMerges>
 								<licenseMerge>Apache License, Version 2.0|Apache 2.0|Apache-2.0|
 									Apache License, Version 2.0, GNU Lesser General Public License|
@@ -408,7 +407,7 @@
 									Public License - v 1.0, GNU Lesser General Public License|Eclipse Public License, Version
 									1.0
 								</licenseMerge>
-								<licenseMerge>MIT License|The MIT License</licenseMerge>
+								<licenseMerge>MIT License|The MIT License|MIT</licenseMerge>
 								<licenseMerge>GNU Lesser General Public License (LGPL)|GNU Lesser General Public License
 								</licenseMerge>
 								<licenseMerge>Common Development And Distribution License (CDDL) + GPL, version 2.0, with
@@ -425,10 +424,10 @@
 				<configuration>
 					<printFailingErrors>true</printFailingErrors>
 					<rulesets>
-						<ruleset>${rootBaseDir}/build/src/main/resources/pmd.xml</ruleset>
+						<ruleset>${project.root.basedir}/build/src/main/resources/pmd.xml</ruleset>
 					</rulesets>
 					<excludeFromFailureFile>
-						${rootBaseDir}/build/src/main/resources/pmd-file-exclusions.properties
+						${project.root.basedir}/build/src/main/resources/pmd-file-exclusions.properties
 					</excludeFromFailureFile>
 					<excludes>
 						<exclude>com/github/cowwoc/requirements10/java/internal/scope/ColorTest.java</exclude>

@@ -162,12 +162,15 @@ public final class CollectionMessages
 	private static MessageBuilder containsFailedImpl(AbstractObjectValidator<?, ?> validator,
 		String relationship, String otherName, Object other)
 	{
-		// "actual" must contain the same value as "expected".
+		// "actual" must contain the same value as "other".
 		// actual: 5
-		// factor: 2
+		// other : 2
+		String name = validator.getName();
 		String otherNameOrValue = validator.getNameOrValue("the same value as ", otherName, "", other);
 		MessageBuilder messageBuilder = new MessageBuilder(validator,
-			quoteName(validator.getName()) + " " + relationship + " " + otherNameOrValue + ".");
+			quoteName(name) + " " + relationship + " " + otherNameOrValue + ".");
+
+		validator.value.nullToInvalid().ifValid(v -> messageBuilder.withContext(v, name));
 		if (otherName != null)
 			messageBuilder.withContext(other, otherName);
 		return messageBuilder;
@@ -367,7 +370,7 @@ public final class CollectionMessages
 	public static <C extends Collection<E>, E> MessageBuilder doesNotContainAllFailed(
 		AbstractObjectValidator<?, ?> validator, String unwantedName, C unwanted, Pluralizer pluralizer)
 	{
-		// "actual" may not contain some, but not all, the elements present in "unwanted".
+		// "actual" may contain some, but not all, the elements present in "unwanted".
 		// actual  : [1, 2, 3]
 		// unwanted: [2, 3, 4]
 		String unwantedNameOrValue = validator.getNameOrValue("", unwantedName, "the set ", unwanted);

@@ -10,8 +10,8 @@ import com.github.cowwoc.requirements10.java.internal.message.CollectionMessages
 import com.github.cowwoc.requirements10.java.internal.message.ObjectMessages;
 import com.github.cowwoc.requirements10.java.internal.scope.ApplicationScope;
 import com.github.cowwoc.requirements10.java.internal.util.Difference;
-import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.internal.util.Pluralizer;
+import com.github.cowwoc.requirements10.java.internal.util.ValidationTarget;
 import com.github.cowwoc.requirements10.java.validator.PrimitiveUnsignedIntegerValidator;
 import com.github.cowwoc.requirements10.java.validator.component.CollectionComponent;
 
@@ -163,13 +163,15 @@ public abstract class AbstractCollectionValidator<S, T extends Collection<E>, E>
 	@Override
 	public S containsExactly(Collection<E> expected)
 	{
+		scope.getInternalValidators().requireThat(expected, "expected").isNotNull();
 		return containsExactlyImpl(expected, null);
 	}
 
 	@Override
 	public S containsExactly(Collection<E> expected, String name)
 	{
-		requireThatNameIsUnique(name);
+		requireThatNameIsUnique(name).
+			requireThat(expected, "expected").isNotNull();
 		return containsExactlyImpl(expected, name);
 	}
 

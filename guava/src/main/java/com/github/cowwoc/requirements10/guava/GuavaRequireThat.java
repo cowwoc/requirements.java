@@ -6,6 +6,7 @@ import com.google.common.collect.Multimap;
 /**
  * Creates validators for the Guava API that throw exceptions immediately on validation failure.
  */
+@FunctionalInterface
 public interface GuavaRequireThat
 {
 	/**

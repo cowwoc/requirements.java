@@ -8,7 +8,6 @@
     * [requirements-guava](https://github.com/cowwoc/requirements.java/requirements-guava/)
     * [requirements-jackson](https://github.com/cowwoc/requirements.java/requirements-jackson/)
     * [requirements-java](https://github.com/cowwoc/requirements.java/requirements-java/)
-    * [FindBugs-jsr305](http://findbugs.sourceforge.net/)
     * [error-prone annotations](https://errorprone.info/error_prone_annotations)
     * [Guava InternalFutureFailureAccess and InternalFutures](https://github.com/google/guava/failureaccess)
     * [Guava: Google Core Libraries for Java](https://github.com/google/guava)
@@ -31,6 +30,7 @@
     * [Logback Core Module](http://logback.qos.ch/logback-core)
   * MIT License:
     * [JOpt Simple](http://jopt-simple.github.io/jopt-simple)
-    * [Checker Qual](https://checkerframework.org/)
     * [SLF4J API Module](http://www.slf4j.org)
     * [jquery](http://webjars.org)
+  * The Apache License, Version 2.0:
+    * [JSpecify annotations](http://jspecify.org/)

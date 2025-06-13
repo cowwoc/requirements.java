@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.github.cowwoc.requirements</groupId>
@@ -10,7 +11,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<rootBaseDir>${project.basedir}/..</rootBaseDir>
+		<project.root.basedir>${project.parent.basedir}</project.root.basedir>
 	</properties>
 
 	<dependencies>
@@ -63,7 +64,7 @@
 							<offlineLinks>
 								<offlineLink>
 									<url>https://cowwoc.github.io/requirements.java/${project.version}/</url>
-									<location>${rootBaseDir}/java/target/reports/apidocs/</location>
+									<location>${project.root.basedir}/java/target/reports/apidocs/</location>
 								</offlineLink>
 							</offlineLinks>
 							<excludePackageNames>
@@ -71,19 +72,6 @@
 								com.github.cowwoc.requirements10.jackson.internal.*
 							</excludePackageNames>
 						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>3rd-party-licenses</id>
-						<goals>
-							<goal>aggregate-add-third-party</goal>
-						</goals>
-						<phase>none</phase>
 					</execution>
 				</executions>
 			</plugin>

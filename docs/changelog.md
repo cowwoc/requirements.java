@@ -2,6 +2,14 @@ Minor updates involving cosmetic changes have been omitted from this list.
 
 See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
+## Version 11.1 - 2025/06/13
+
+* Bugfixes
+  * `PathValidator.contains()` now checks if `expected` is null.
+  * `CollectionValidator.contains()`'s failure message now includes the value being validated.
+  * `PathValidator.contains()` now checks if `expected` is null.
+  * Added `PathValidator.isExecutable()`, `isEmpty()`, `isNotEmpty()`, `doesNotContain()`.
+
 ## Version 11.0 - 2025/02/18
 
 * Renamed artifact `root` to `requirements`.
