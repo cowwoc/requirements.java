@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.List;
 import java.util.Set;
@@ -215,7 +216,9 @@ public final class PathTest
 			TestValidators validators = TestValidators.of(scope);
 
 			Path actual = Files.createTempFile(null, null);
-			Files.setPosixFilePermissions(actual, Set.of(PosixFilePermission.OWNER_WRITE));
+			PosixFileAttributeView view = Files.getFileAttributeView(actual, PosixFileAttributeView.class);
+			if (view != null)
+				view.setPermissions(Set.of(PosixFilePermission.OWNER_WRITE));
 			try
 			{
 				validators.requireThat(actual, "actual").isExecutable();
