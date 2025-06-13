@@ -218,7 +218,7 @@ public final class PathTest
 			Path actual = Files.createTempFile(null, null);
 			PosixFileAttributeView view = Files.getFileAttributeView(actual, PosixFileAttributeView.class);
 			if (view != null)
-				view.setPermissions(Set.of(PosixFilePermission.OWNER_WRITE));
+				view.setPermissions(Set.of(PosixFilePermission.OWNER_EXECUTE));
 			try
 			{
 				validators.requireThat(actual, "actual").isExecutable();
