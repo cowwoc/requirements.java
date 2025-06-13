@@ -10,15 +10,15 @@
  * invariants</a> of <a href="https://github.com/FasterXML/jackson-databind">Jackson</a> types.
  */
 @SuppressWarnings("JavaModuleNaming")
-module com.github.cowwoc.requirements10.jackson
+module com.github.cowwoc.requirements11.jackson
 {
 	requires transitive com.fasterxml.jackson.databind;
-	requires transitive com.github.cowwoc.requirements10.annotation;
-	requires transitive com.github.cowwoc.requirements10.java;
+	requires transitive com.github.cowwoc.requirements11.annotation;
+	requires transitive com.github.cowwoc.requirements11.java;
 	requires com.github.cowwoc.pouch.core;
 	requires java.xml;
 
-	exports com.github.cowwoc.requirements10.jackson;
-	exports com.github.cowwoc.requirements10.jackson.internal.validator to com.github.cowwoc.requirements10.test;
-	exports com.github.cowwoc.requirements10.jackson.validator;
+	exports com.github.cowwoc.requirements11.jackson;
+	exports com.github.cowwoc.requirements11.jackson.internal.validator to com.github.cowwoc.requirements11.test;
+	exports com.github.cowwoc.requirements11.jackson.validator;
 }

@@ -6,12 +6,12 @@
  * Benchmark of the Java module.
  */
 @SuppressWarnings("JavaModuleNaming")
-module com.github.cowwoc.requirements10.benchmark.java
+module com.github.cowwoc.requirements11.benchmark.java
 {
 	requires jmh.core;
 	requires org.testng;
-	requires com.github.cowwoc.requirements10.java;
+	requires com.github.cowwoc.requirements11.java;
 
-	exports com.github.cowwoc.requirements10.benchmark.java to org.testng;
-	exports com.github.cowwoc.requirements10.benchmark.java.jmh_generated to jmh.core;
+	exports com.github.cowwoc.requirements11.benchmark.java to org.testng;
+	exports com.github.cowwoc.requirements11.benchmark.java.jmh_generated to jmh.core;
 }

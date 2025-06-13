@@ -31,9 +31,9 @@ To get started, add this Maven dependency:
 import java.util.List;
 import java.util.StringJoiner;
 
-import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.checkIf;
-import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.requireThat;
-import static com.github.cowwoc.requirements10.java.DefaultJavaValidators.that;
+import static com.github.cowwoc.requirements11.java.DefaultJavaValidators.checkIf;
+import static com.github.cowwoc.requirements11.java.DefaultJavaValidators.requireThat;
+import static com.github.cowwoc.requirements11.java.DefaultJavaValidators.that;
 
 public final class Cake
 {
@@ -151,11 +151,11 @@ This library offers the following features:
 Designed for discovery using your favorite IDE's auto-complete feature.
 The main entry points are:
 
-* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/11.0/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#requireThat(T,java.lang.String))
+* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/11.0/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements11/java/DefaultJavaValidators.html#requireThat(T,java.lang.String))
   for method preconditions.
-* [that(value, name)](https://cowwoc.github.io/requirements.java/11.0/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#that(T,java.lang.String))
+* [that(value, name)](https://cowwoc.github.io/requirements.java/11.0/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements11/java/DefaultJavaValidators.html#that(T,java.lang.String))
   for [class invariants, method postconditions and private methods](docs/features.md#assertion-support).
-* [checkIf(value, name)](https://cowwoc.github.io/requirements.java/11.0/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements10/java/DefaultJavaValidators.html#checkIf(T,java.lang.String))
+* [checkIf(value, name)](https://cowwoc.github.io/requirements.java/11.0/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements11/java/DefaultJavaValidators.html#checkIf(T,java.lang.String))
   for multiple failures and customized error handling.
 
 See the [API documentation](https://cowwoc.github.io/requirements.java/11.0/) for more details.

@@ -10,13 +10,13 @@
  * invariants</a> of <a href="https://github.com/google/guava">Guava</a> types.
  */
 @SuppressWarnings("JavaModuleNaming")
-module com.github.cowwoc.requirements10.guava
+module com.github.cowwoc.requirements11.guava
 {
 	requires transitive com.google.common;
-	requires transitive com.github.cowwoc.requirements10.annotation;
-	requires transitive com.github.cowwoc.requirements10.java;
+	requires transitive com.github.cowwoc.requirements11.annotation;
+	requires transitive com.github.cowwoc.requirements11.java;
 
-	exports com.github.cowwoc.requirements10.guava;
-	exports com.github.cowwoc.requirements10.guava.internal.validator to com.github.cowwoc.requirements10.test;
-	exports com.github.cowwoc.requirements10.guava.validator;
+	exports com.github.cowwoc.requirements11.guava;
+	exports com.github.cowwoc.requirements11.guava.internal.validator to com.github.cowwoc.requirements11.test;
+	exports com.github.cowwoc.requirements11.guava.validator;
 }

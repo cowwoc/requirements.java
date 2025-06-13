@@ -2,6 +2,11 @@ Minor updates involving cosmetic changes have been omitted from this list.
 
 See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
+## Version 11.2 - 2025/06/13
+
+* Renamed the module and package names from `requirements10` to `requirements11` (apologies for the oversight
+  in not addressing this sooner).
+
 ## Version 11.1 - 2025/06/13
 
 * Bugfixes
