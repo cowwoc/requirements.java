@@ -1,0 +1,12 @@
+module:io.github.cowwoc.requirements12.annotation
+io.github.cowwoc.requirements12.annotation
+module:io.github.cowwoc.requirements12.guava
+io.github.cowwoc.requirements12.guava
+io.github.cowwoc.requirements12.guava.validator
+module:io.github.cowwoc.requirements12.jackson
+io.github.cowwoc.requirements12.jackson
+io.github.cowwoc.requirements12.jackson.validator
+module:io.github.cowwoc.requirements12.java
+io.github.cowwoc.requirements12.java
+io.github.cowwoc.requirements12.java.validator
+io.github.cowwoc.requirements12.java.validator.component
