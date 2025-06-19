@@ -1,9 +1,5 @@
-# Based on https://docs.github.com/en/actions/publishing-packages/publishing-java-packages-with-maven
-# https://gist.github.com/cstamas/69e6365bbb70521923020d68369bf8e5 and
-# https://oss.sonatype.org/nexus-staging-plugin/default/docs/rest.html
 name: Deploy to Maven Central
-on:
-  workflow_dispatch:
+on: workflow_dispatch
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
   cancel-in-progress: true
@@ -13,213 +9,252 @@ permissions:
   id-token: write
 
 env:
-  STAGING_HOST: "oss.sonatype.org"
-  OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-  OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
-  MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+  STAGING_HOST: "central.sonatype.com"
 jobs:
-  open-release:
-    name: Open release
+  tag-release:
+    name: Tag release
     runs-on: ubuntu-latest
     outputs:
-      INITIAL_MAIN_POSITION: ${{ steps.create-tag.outputs.INITIAL_MAIN_POSITION }}
+      INITIAL_REF_POSITION: ${{ steps.create-tag.outputs.INITIAL_REF_POSITION }}
       TAG: ${{ steps.create-tag.outputs.TAG }}
       VERSION: ${{ steps.create-tag.outputs.VERSION }}
-      STAGING_PROFILE_ID: ${{ steps.parse-profile-id.outputs.STAGING_PROFILE_ID }}
-      STAGING_REPOSITORY_ID: ${{ steps.parse-repository-id.outputs.STAGING_REPOSITORY_ID }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
       - uses: actions/setup-java@v4
         with:
-          distribution: zulu
-          java-version: 21
-          server-id: maven-central-releases
-          # Server authentication corresponds to "user token" returned by https://oss.sonatype.org/
-          server-username: OSSRH_USERNAME
-          server-password: OSSRH_TOKEN
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+          distribution: temurin
+          java-version: 24
 
       - name: Cache Dependencies
         uses: actions/cache@v4
         with:
           path: ~/.m2/repository/*
-          key: "${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}"
+          key: "${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}-tag-release"
 
       - name: Configure Git User
         run: |
           git config user.email "cowwoc2020@gmail.com"
           git config user.name "Gili Tzabari"
 
-      # Maven command-line options:
-      # --batch-mode: recommended in CI to inform maven to not run in interactive mode (less logs)
-      # -V: strongly recommended in CI, will display the JDK and Maven versions in use.
-      #      Very useful to be quickly sure the selected versions were the ones you think.
-      # -e: Display stack-traces on failure
-      #
-      # Getting the current git tag: https://stackoverflow.com/a/50465671/14731
-      #
-      # Setting a GitHub Action output parameter:
-      # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
-      # Extracting the release version number: https://stackoverflow.com/a/16623897/14731
       - name: Create tag
         id: create-tag
         run: |
-          echo "INITIAL_MAIN_POSITION=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          ./mvnw release:prepare --batch-mode -V -e
+          echo "INITIAL_REF_POSITION=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+          # Maven command-line options:
+          # --batch-mode: recommended in CI to inform maven to not run in interactive mode (less logs)
+          # -V: strongly recommended in CI, will display the JDK and Maven versions in use.
+          #      Very useful to be quickly sure the selected versions were the ones you think.
+          # -e: Display stack-traces on failure
+          #
+          # "release:prepare" must skip integration tests because "binaries-on-path-test" requires artifacts
+          # to be deployed to local repository.
+          ./mvnw release:prepare --batch-mode -V -e -Darguments="-Dinvoker.skip=true"
+
+          # Getting the current git tag: https://stackoverflow.com/a/50465671/14731
           TAG=$(git describe --tag --abbrev=0)
+
+          # Setting a GitHub Action output parameter:
+          # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
           echo "TAG=${TAG}" >> "$GITHUB_OUTPUT"
-          echo "VERSION=${TAG#\"release-\"}" >> "$GITHUB_OUTPUT"
 
-      - name: Look up staging profile id
-        id: request-profile-id
-        run: >
-          echo "STAGING_PROFILE_ID=$(curl -u '${{ secrets.OSSRH_USERNAME}}:${{ secrets.OSSRH_TOKEN }}'
-          -H 'Accept:application/json'
-          'https://${{ env.STAGING_HOST }}/service/local/staging/profile_evaluate?t=maven2&g=com.github.cowwoc.requirements&a=anything&v=anything')"
-          >> "$GITHUB_OUTPUT"
+          # Extracting the release version number: https://stackoverflow.com/a/16623897/14731
+          echo "VERSION=${TAG#"release-"}" >> "$GITHUB_OUTPUT"
 
-      - name: Parse the staging profile id
-        id: parse-profile-id
-        run: >
-          echo "STAGING_PROFILE_ID=$(echo '${{ steps.request-profile-id.outputs.STAGING_PROFILE_ID }}' | jq -r '.data[0].id')" >> "$GITHUB_OUTPUT"
-
-      - name: Open staging repository
-        id: open-repository
-        run: >
-          echo "STAGING_REPOSITORY_ID=$(curl -u '${{ secrets.OSSRH_USERNAME}}:${{ secrets.OSSRH_TOKEN }}'
-          -H 'Accept: application/json'
-          -H 'Content-type: application/json'
-          -X POST -d '{"data": {"description": "requirements.java ${{ steps.create-tag.outputs.VERSION }}"}}'
-          'https://${{ env.STAGING_HOST }}/service/local/staging/profiles/${{ steps.parse-profile-id.outputs.STAGING_PROFILE_ID }}/start')"
-          >> "$GITHUB_OUTPUT"
-
-      - name: Parse the staging repository id
-        id: parse-repository-id
-        run: >
-          echo "STAGING_REPOSITORY_ID=$(echo '${{ steps.open-repository.outputs.STAGING_REPOSITORY_ID }}' | jq -r '.data.stagedRepositoryId')" >> "$GITHUB_OUTPUT"
-
+  build:
+    needs: tag-release
+    name: Build
+    uses: ./.github/workflows/reusable-build.yml
+    secrets: inherit
+    permissions:
+      contents: read
+      actions: read
+      checks: write
+      packages: write
+    with:
+      COMMIT_ID: ${{ needs.tag-release.outputs.TAG }}
+      VERSION: ${{ needs.tag-release.outputs.VERSION }}
+      FOR_RELEASE: true
   deploy:
+    needs: [ tag-release, build ]
     name: Deploy
-    needs: open-release
     runs-on: ubuntu-latest
+    outputs:
+      ID: ${{ steps.upload.outputs.ID }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ needs.open-release.outputs.TAG }}
-          fetch-depth: 0
+          ref: ${{ github.ref }}
 
       - name: Configure Git User
         run: |
           git config user.email "cowwoc2020@gmail.com"
           git config user.name "Gili Tzabari"
 
-      - name: Install Java
-        uses: actions/setup-java@v4
+      - name: Download bundles
+        uses: actions/download-artifact@v4
         with:
-          distribution: zulu
-          java-version: 21
-          server-id: maven-central-releases
-          # Server authentication corresponds to "user token" returned by https://oss.sonatype.org/
-          server-username: OSSRH_USERNAME
-          server-password: OSSRH_TOKEN
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+          path: "${{ github.workspace }}/bundles"
 
-      - name: Cache Dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository/*
-          key: "${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}"
-
-      - name: Test build
-        run: ./mvnw --batch-mode -V -e verify
-
-      # Must quote exclamation mark on bash: https://stackoverflow.com/a/27177197/14731
-      - name: Deploy to Maven Central
-        run: >
-          ./mvnw --batch-mode -V -e -pl '!test,!benchmark,!benchmark/java,!benchmark/guava,!benchmark/assertj'
-          -Dstaging_repository_id=${{ needs.open-release.outputs.STAGING_REPOSITORY_ID }}
-          -Dstaging_host="${{ env.STAGING_HOST }}"
-          -P release
-          deploy
-
-      # Must quote exclamation mark on bash: https://stackoverflow.com/a/27177197/14731
-      - name: Generate documentation
+      - name: Generate metadata
+        shell: bash
+        env:
+          MAVEN_GPG_PRIVATE_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
         run: |
-          ./mvnw --batch-mode -V -e -pl '!test,!benchmark,!benchmark/java,!benchmark/guava,!benchmark/assertj' javadoc:aggregate
-          VERSION=${{ needs.open-release.outputs.VERSION }}
-          rm -rf "docs/api/${VERSION}"
-          mkdir --parents "docs/api/${VERSION}"
-          mv target/reports/apidocs/* "docs/api/${VERSION}"
+          # Define the temporary file location for the private key
+          GPG_KEY_FILE="$(mktemp)"
+          
+          # Write the private key to the temp file
+          echo "${MAVEN_GPG_PRIVATE_KEY}" > "${GPG_KEY_FILE}"
+          
+          # Import the private key into the GPG keychain
+          IMPORTED_KEY=$(gpg --batch --import "${GPG_KEY_FILE}" 2>&1)
+
+          # Remove the temporary key file immediately after import
+          shred --remove "${GPG_KEY_FILE}"
+
+          GPG_KEY_ID=$(echo "$IMPORTED_KEY" | tr -d '\r' | awk '/^gpg: key .*: secret key imported$/ \
+            { print $3; exit }')
+          # Strip away trailing colon
+          GPG_KEY_ID=${GPG_KEY_ID%:}
+          
+          if [ -z "${GPG_KEY_ID}" ]; then
+            echo "Error: Could not parse the secret key's ID"
+            exit 1
+          fi
+          
+          # --batch requires the use of the key's fingerprint
+          # Based on https://unix.stackexchange.com/a/743986/60809
+          export GPG_KEY_ID=$(gpg --list-secret-keys --with-colons | awk -F: -v keyid="${GPG_KEY_ID}" '
+            $1 == "sec" && $5 == keyid { found=1; next }
+            found && $1 == "fpr" {print $10; exit}
+          ')
+          
+          # Define the temporary file location for the passphrase
+          export GPG_PASSPHRASE_FILE="$(mktemp)"
+
+          # Write the passphrase to the temp file
+          echo "${MAVEN_GPG_PASSPHRASE}" > "${GPG_PASSPHRASE_FILE}"
+
+          # Setup a cleanup trap to remove the key after the job completes
+          cleanup_gpg()
+          {
+            gpg --batch --yes --delete-secret-keys "${GPG_KEY_ID}"
+            gpg --batch --yes --delete-keys "${GPG_KEY_ID}"
+            shred --remove --force "${GPG_PASSPHRASE_FILE}"
+            unset GPG_PASSPHRASE_FILE
+          }
+          trap cleanup_gpg EXIT
+          
+          # Create the expected directory structure
+          mkdir -p publish/
+          mv bundles/requirements-bundle/.m2/repository/* publish/
+          
+          VERSION=${{ needs.tag-release.outputs.VERSION }}
+          rm -rf docs/api/${VERSION}
+          mkdir --parents docs/api/${VERSION}
+          mv bundles/requirements-bundle/work/requirements.java/requirements.java/docs/api/${VERSION} \
+            docs/api/${VERSION}
+          rm -rf bundles
+
+          # Sign and generate checksums for all JAR and POM files
+          cd publish/
+          find . -type f \( -name "*.jar" -o -name "*.pom" \) -exec sh -c '
+            for file; do
+              # Reminder: this block only sees exported variables
+              cat "${GPG_PASSPHRASE_FILE}" | gpg --batch --pinentry-mode loopback --passphrase-fd 0 --yes \
+                --detach-sign --armor --local-user ${GPG_KEY_ID} -o "${file}.asc" "${file}"
+              md5sum "${file}" | awk "{print \$1}" > "${file}.md5"
+              sha1sum "${file}" | awk "{print \$1}" > "${file}.sha1"
+              sha256sum "${file}" | awk "{print \$1}" > "${file}.sha256"
+              sha512sum "${file}" | awk "{print \$1}" > "${file}.sha512"
+            done
+          ' sh {} +
+
+          # Clean up proactively
+          cleanup_gpg
+          trap - EXIT
+
+          zip -r "../requirements-${{ needs.tag-release.outputs.VERSION }}.zip" .          
+          cd ..
 
       - name: Commit documentation
         run: |
-          git checkout ${{ github.ref_name }} -f
-          git add "docs/api/${{ needs.open-release.outputs.VERSION }}"
-          git commit -m "Publishing documentation for version ${{ needs.open-release.outputs.VERSION }}"
+          VERSION=${{ needs.tag-release.outputs.VERSION }}
+          git add docs/api/${VERSION}
+          git commit -m "Publishing documentation for version ${VERSION}"
           git push
 
-  document:
-    name: Document
-    needs: deploy
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "docs/api"
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Upload bundle
+        id: upload
+        env:
+          # The credentials correspond to the user token returned by https://central.sonatype.com/account
+          # See https://central.sonatype.org/publish/publish-portal-api/#authentication-authorization
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          VERSION: ${{ needs.tag-release.outputs.VERSION }}
+        run: |
+          BEARER_TOKEN=$(printf "${MAVEN_CENTRAL_USERNAME}:${MAVEN_CENTRAL_PASSWORD}" | base64)
+          
+          ID=$(curl --request POST --show-error --fail \
+          --header "Authorization: Bearer ${BEARER_TOKEN}" \
+          --form "bundle=@requirements-${VERSION}.zip" \
+          --form "name=requirements-${VERSION}" \
+          --form "publishingType=USER_MANAGED" \
+          https://central.sonatype.com/api/v1/publisher/upload)
+          
+          echo "ID=${ID}" >> $GITHUB_ENV
 
-  close-release:
-    name: Close release
-    needs: [ open-release, deploy, document ]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.open-release.outputs.TAG }}
-      - uses: actions/setup-java@v4
-        with:
-          distribution: zulu
-          java-version: 21
-          server-id: maven-central-releases
-          # Server authentication corresponds to "user token" returned by https://oss.sonatype.org/
-          server-username: OSSRH_USERNAME
-          server-password: OSSRH_TOKEN
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      - name: Poll for deployment status
+        env:
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+        run: |
+          BEARER_TOKEN=$(printf "${MAVEN_CENTRAL_USERNAME}:${MAVEN_CENTRAL_PASSWORD}" | base64)
+          
+          while true; do
+            response=$(curl --request POST --show-error --fail --silent \
+            --header "Authorization: Bearer ${BEARER_TOKEN}" \
+            "https://central.sonatype.com/api/v1/publisher/status?id=${ID}")
+          
+            status=$(echo "${response}" | jq -r '.deploymentState')
+            echo "Current status: ${status}"
+          
+            if [[ "${status}" == "VALIDATED" ]]; then
+              echo "Deployment validated successfully!"
+              exit 0
+            elif [[ "${status}" == "FAILED" ]]; then
+              echo "Deployment failed!"
+              exit 1
+            fi
+            sleep 5
+          done
 
-      - name: Cache Dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository/*
-          key: "${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}"
+      - name: Publish release
+        env:
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+        run: |
+          BEARER_TOKEN=$(printf "${MAVEN_CENTRAL_USERNAME}:${MAVEN_CENTRAL_PASSWORD}" | base64)
+          
+          response=$(curl --request POST --show-error --fail --write-out "%{response_code}" --silent \
+          --output /dev/null --header "Authorization: Bearer ${BEARER_TOKEN}" \
+          "https://central.sonatype.com/api/v1/publisher/deployment/${ID}")
+          
+          if [[ "${response}" == "204" ]]; then
+            echo "Release published successfully!"
+            exit 0
+          else
+            echo "Unexpected response code: ${response}"
+            exit 1
+          fi
 
-      - name: Close staging repository
-        run: >
-          curl -u ${{ secrets.OSSRH_USERNAME}}:${{ secrets.OSSRH_TOKEN }} -X POST
-          -H "Content-Type:application/json"
-          -d '{"data": {"stagedRepositoryId": "${{ needs.open-release.outputs.STAGING_REPOSITORY_ID }}", "description": "Closing repository"}}'
-          'https://${{ env.STAGING_HOST }}/service/local/staging/profiles/${{ needs.open-release.outputs.STAGING_PROFILE_ID }}/finish' 
-
-  # Cleanup on failure: https://stackoverflow.com/a/74562058/14731
   on-failure:
     name: On failure
-    needs: [ open-release, deploy, document, close-release ]
+    needs: [ tag-release, build, deploy ]
     runs-on: ubuntu-latest
     if: ${{ failure() || cancelled() }}
     steps:
@@ -230,29 +265,27 @@ jobs:
       - name: Install Java
         uses: actions/setup-java@v4
         with:
-          distribution: zulu
-          java-version: 21
-          server-id: maven-central-releases
-          # Server authentication corresponds to "user token" returned by https://oss.sonatype.org/
-          server-username: OSSRH_USERNAME
-          server-password: OSSRH_TOKEN
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+          distribution: temurin
+          java-version: 8
 
-      - name: Drop staging repository
-        if: needs.open-release.outputs.STAGING_REPOSITORY_ID != '' && needs.open-release.outputs.STAGING_PROFILE_ID != ''
+      - name: Drop the bundle
+        if: needs.deploy.outputs.ID != ''
+        env:
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
         run: >
-          curl -u ${{ secrets.OSSRH_USERNAME}}:${{ secrets.OSSRH_TOKEN }} -X POST
-          -H "Content-Type:application/json"
-          -d '{"data": {"stagedRepositoryId": "${{ needs.open-release.outputs.STAGING_REPOSITORY_ID }}", "description": "Dropping repository"}}'
-          'https://${{ env.STAGING_HOST }}/service/local/staging/profiles/${{ needs.open-release.outputs.STAGING_PROFILE_ID }}/drop'
+          BEARER_TOKEN=$(printf "${MAVEN_CENTRAL_USERNAME}:${MAVEN_CENTRAL_PASSWORD}" | base64)
+          
+          curl --request DELETE --show-error --fail \
+            --header "Authorization: Bearer ${BEARER_TOKEN}" \
+            "https://central.sonatype.com/api/v1/publisher/status?id=${{ needs.deploy.outputs.ID }}")
 
-      - name: Restore the main ref to its original position
-        if: needs.open-release.outputs.INITIAL_MAIN_POSITION != ''
+      - name: Restore the workflow ref to its original position
+        if: needs.tag-release.outputs.INITIAL_REF_POSITION != ''
         run: |
           CURRENT_REF_POSITION=$(git rev-parse HEAD)
-          if [ "${CURRENT_REF_POSITION}" != "${{ needs.open-release.outputs.INITIAL_MAIN_POSITION }}" ]; then
-            git reset --hard ${{ needs.open-release.outputs.INITIAL_MAIN_POSITION }}
+          if [ "${CURRENT_REF_POSITION}" != "${{ needs.tag-release.outputs.INITIAL_REF_POSITION }}" ]; then
+            git reset --hard ${{ needs.tag-release.outputs.INITIAL_REF_POSITION }}
             if [ "${{ github.ref_type }}" == "tag" ]; then
               git ${{ github.ref_type }} -f ${{ github.ref_name }}
             fi
@@ -260,6 +293,6 @@ jobs:
           fi
 
       - name: Delete tag
-        if: needs.open-release.outputs.TAG != ''
+        if: needs.tag-release.outputs.TAG != ''
         run: |
-          git push --delete origin ${{ needs.open-release.outputs.TAG }}
+          git push --delete origin ${{ needs.tag-release.outputs.TAG }}

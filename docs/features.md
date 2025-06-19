@@ -107,7 +107,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 
-import static com.github.cowwoc.requirements11.java.DefaultJavaValidators.that;
+import static io.github.cowwoc.requirements12.java.DefaultJavaValidators.that;
 
 public class Person
 {
@@ -174,7 +174,7 @@ requireThat(nameToAge, "nameToAge").
 ## String diff
 
 When
-a [String comparison](https://cowwoc.github.io/requirements.java/11.0/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements11/java/type/component/ObjectValidatorComponent#isEqualTo(java.lang.Object))
+a [String comparison](https://cowwoc.github.io/requirements.java/12.0/io.github.cowwoc.requirements.java/com/github/cowwoc/requirements12/java/type/component/ObjectValidatorComponent#isEqualTo(java.lang.Object))
 fails, the library outputs a diff of the values being compared.
 
 Depending on the terminal capability, you will see a [textual](textual_diff.md) or a [colored](colored_diff.md) diff.
@@ -188,7 +188,7 @@ terminal.
 
 The use of colors is disabled by default if stdin or stdout are redirected, even if ANSI colors are supported.
 To enable colors,
-invoke [GlobalConfiguration.terminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/11.0/com.github.cowwoc.requirements.java/com/github/cowwoc/requirements11/java/GlobalConfiguration.html#terminalEncoding(com.github.cowwoc.requirements11.java.TerminalEncoding)).
+invoke [GlobalConfiguration.terminalEncoding(TerminalEncoding)](https://cowwoc.github.io/requirements.java/12.0/io.github.cowwoc.requirements.java/com/github/cowwoc/requirements12/java/GlobalConfiguration.html#terminalEncoding(io.github.cowwoc.requirements12.java.TerminalEncoding)).
 
 ## Returning the value after validation
 

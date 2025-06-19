@@ -2,6 +2,12 @@ Minor updates involving cosmetic changes have been omitted from this list.
 
 See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
+## Version 12.0 - 2025/06/13
+
+* Breaking changes
+    * Changed groupId from `com.github.cowwoc.requirements` to `io.github.cowwoc.requirements`.
+    * Renamed the module and package names from `requirements11` to `requirements12`.
+
 ## Version 11.2 - 2025/06/13
 
 * Renamed the module and package names from `requirements10` to `requirements11` (apologies for the oversight
@@ -10,10 +16,10 @@ See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 ## Version 11.1 - 2025/06/13
 
 * Bugfixes
-  * `PathValidator.contains()` now checks if `expected` is null.
-  * `CollectionValidator.contains()`'s failure message now includes the value being validated.
-  * `PathValidator.contains()` now checks if `expected` is null.
-  * Added `PathValidator.isExecutable()`, `isEmpty()`, `isNotEmpty()`, `doesNotContain()`.
+    * `PathValidator.contains()` now checks if `expected` is null.
+    * `CollectionValidator.contains()`'s failure message now includes the value being validated.
+    * `PathValidator.contains()` now checks if `expected` is null.
+    * Added `PathValidator.isExecutable()`, `isEmpty()`, `isNotEmpty()`, `doesNotContain()`.
 
 ## Version 11.0 - 2025/02/18
 

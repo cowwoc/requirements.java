@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<ruleset name="cowwoc-main"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+	<description>Rules that do not apply to tests</description>
+	<exclude-pattern>.*/src/test/.*</exclude-pattern>
+
+	<rule ref="category/java/documentation.xml/CommentRequired">
+		<properties>
+			<property name="methodWithOverrideCommentRequirement" value="Ignored"/>
+			<property name="accessorCommentRequirement" value="Ignored"/>
+			<property name="classCommentRequirement" value="Ignored"/>
+			<property name="fieldCommentRequirement" value="Ignored"/>
+			<property name="publicMethodCommentRequirement" value="Required"/>
+			<property name="protectedMethodCommentRequirement" value="Ignored"/>
+			<property name="enumCommentRequirement" value="Ignored"/>
+			<property name="serialVersionUIDCommentRequired" value="Ignored"/>
+			<property name="serialPersistentFieldsCommentRequired" value="Ignored"/>
+		</properties>
+	</rule>
+
+	<rule ref="category/java/codestyle.xml/MethodNamingConventions"/>
+</ruleset>

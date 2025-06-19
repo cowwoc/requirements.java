@@ -6,12 +6,12 @@
  * Benchmark of equivalent assertj functionality.
  */
 @SuppressWarnings("JavaModuleNaming")
-module com.github.cowwoc.requirements11.benchmark.assertj
+module io.github.cowwoc.requirements12.benchmark.assertj
 {
 	requires jmh.core;
 	requires org.testng;
 	requires org.assertj.core;
 
-	exports com.github.cowwoc.requirements11.benchmark.assertj to org.testng;
-	exports com.github.cowwoc.requirements11.benchmark.assertj.jmh_generated to jmh.core;
+	exports io.github.cowwoc.requirements12.benchmark.assertj to org.testng;
+	exports io.github.cowwoc.requirements12.benchmark.assertj.jmh_generated to jmh.core;
 }

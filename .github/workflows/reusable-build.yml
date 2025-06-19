@@ -1,0 +1,77 @@
+name: Reusable Build
+on:
+  workflow_call:
+    inputs:
+      COMMIT_ID:
+        required: true
+        type: string
+      VERSION:
+        required: false
+        type: string
+      FOR_RELEASE:
+        required: true
+        type: boolean
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.COMMIT_ID }}
+
+      - name: Install Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          # Avoid caching the generated artifacts
+          path: |
+            ~/.m2/repository/*
+            !~/.m2/repository/io/github/cowwoc/requirements/
+          key: "${{ runner.OS }}-maven-${{ hashFiles('**/pom.xml') }}-build"
+
+      # Maven command-line options:
+      # --batch-mode: recommended in CI to inform maven to not run in interactive mode (less logs)
+      # -V: strongly recommended in CI, will display the JDK and Maven versions in use.
+      # -Dsurefire.useFile=false: useful in CI. Displays test errors in the logs directly (instead of
+      #                           having to crawl the workspace files to see the cause).
+      # -e: Display stack-traces on failure
+      # -P release: activate the "release" profile
+      - name: Build
+        shell: bash
+        run: |
+          PROFILE=""          
+          if [[ "${{ inputs.FOR_RELEASE }}" == "true" ]]; then
+            PROFILE="-P release"
+          fi
+          ./mvnw install --batch-mode -V "-Dsurefire.useFile=false" -e ${PROFILE}
+
+      # Must quote exclamation mark on bash: https://stackoverflow.com/a/27177197/14731
+      - name: Generate documentation
+        if: ${{ inputs.FOR_RELEASE }}
+        run: |
+          ./mvnw --batch-mode -V -e -pl '!test,!benchmark,!benchmark/java,!benchmark/guava,!benchmark/assertj' verify javadoc:aggregate
+          VERSION=${{ inputs.VERSION }}
+          rm -rf "docs/api/${VERSION}"
+          mkdir --parents "docs/api/${VERSION}"
+          mv target/reports/apidocs/* "docs/api/${VERSION}"
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ inputs.FOR_RELEASE }}
+        with:
+          name: requirements-bundle
+          path: |
+            ~/.m2/repository/io/github/cowwoc/requirements/
+            !~/.m2/repository/io/github/cowwoc/requirements/**/maven-metadata-local.xml
+            !~/.m2/repository/io/github/cowwoc/requirements/**/_remote.repositories
+            !~/.m2/repository/io/github/cowwoc/requirements/**/*.lastUpdated
+            docs/api/${{ inputs.VERSION }}
+          if-no-files-found: error
+          retention-days: 1

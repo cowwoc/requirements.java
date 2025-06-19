@@ -9,6 +9,6 @@
 		<appender-ref ref="stdout"/>
 	</root>
 	<logger name="org.testng" level="warn"/>
-	<logger name="com.github.cowwoc.requirements11.java.internal.util.Exceptions" level="debug"/>
-	<logger name="com.github.cowwoc.requirements11.java.internal.terminal.Terminal" level="debug"/>
+	<logger name="io.github.cowwoc.requirements12.java.internal.util.Exceptions" level="debug"/>
+	<logger name="io.github.cowwoc.requirements12.java.internal.terminal.Terminal" level="debug"/>
 </configuration>

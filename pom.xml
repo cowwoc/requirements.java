@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.github.cowwoc.requirements</groupId>
+	<groupId>io.github.cowwoc.requirements</groupId>
 	<artifactId>requirements</artifactId>
-	<version>11.3-SNAPSHOT</version>
+	<version>12.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Requirements</name>
+	<name>requirements</name>
 	<description>A fluent API for enforcing design contracts with automatic message generation</description>
 	<url>https://github.com/cowwoc/requirements.java/</url>
 
@@ -60,11 +61,12 @@
 		<maven.compiler.release>21</maven.compiler.release>
 		<guava.version>33.4.8-jre</guava.version>
 		<error_prone_annotations.version>2.26.1</error_prone_annotations.version>
-		<jackson.version>2.19.0</jackson.version>
+		<jackson.version>2.19.1</jackson.version>
 		<slf4j.version>2.0.17</slf4j.version>
 		<testng.version>7.11.0</testng.version>
 		<jmh.version>1.37</jmh.version>
 		<pmd.version>7.14.0</pmd.version>
+		<checkstyle.plugin.version>3.6.0</checkstyle.plugin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -122,7 +124,7 @@
 			<dependency>
 				<groupId>com.github.javaparser</groupId>
 				<artifactId>javaparser-core</artifactId>
-				<version>3.26.4</version>
+				<version>3.27.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.github.java-diff-utils</groupId>
@@ -140,9 +142,9 @@
 				<version>${slf4j.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.github.cowwoc.pouch</groupId>
+				<groupId>io.github.cowwoc.pouch</groupId>
 				<artifactId>pouch-core</artifactId>
-				<version>8.1</version>
+				<version>9.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.twdata.maven</groupId>
@@ -213,12 +215,12 @@
 									</link>
 								</links>
 								<excludePackageNames>
-									com.github.cowwoc.requirements11.java.internal,
-									com.github.cowwoc.requirements11.java.internal.*,
-									com.github.cowwoc.requirements11.guava.internal,
-									com.github.cowwoc.requirements11.guava.internal.*,
-									com.github.cowwoc.requirements11.jackson.internal,
-									com.github.cowwoc.requirements11.jackson.internal.*
+									io.github.cowwoc.requirements12.java.internal,
+									io.github.cowwoc.requirements12.java.internal.*,
+									io.github.cowwoc.requirements12.guava.internal,
+									io.github.cowwoc.requirements12.guava.internal.*,
+									io.github.cowwoc.requirements12.jackson.internal,
+									io.github.cowwoc.requirements12.jackson.internal.*
 								</excludePackageNames>
 							</configuration>
 						</execution>
@@ -227,12 +229,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.5.2</version>
+					<version>3.5.3</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.4.1</version>
+					<version>3.5.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -293,6 +295,34 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>${checkstyle.plugin.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>com.puppycrawl.tools</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>10.25.0</version>
+						</dependency>
+					</dependencies>
+					<configuration>
+						<configLocation>${project.root.basedir}/lint/checkstyle.xml</configLocation>
+						<consoleOutput>true</consoleOutput>
+						<failOnViolation>true</failOnViolation>
+						<linkXRef>false</linkXRef>
+						<includeTestSourceDirectory>true</includeTestSourceDirectory>
+						<excludeGeneratedSources>true</excludeGeneratedSources>
+					</configuration>
+					<executions>
+						<execution>
+							<phase>validate</phase>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-gpg-plugin</artifactId>
 					<version>3.2.7</version>
 					<executions>
@@ -307,18 +337,6 @@
 							</configuration>
 						</execution>
 					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>3.1.4</version>
-					<configuration>
-						<deployAtEnd>true</deployAtEnd>
-						<altReleaseDeploymentRepository>
-							<!-- Based on https://gist.github.com/cstamas/69e6365bbb70521923020d68369bf8e5 -->
-							maven-central-releases::https://${staging_host}/service/local/staging/deployByRepositoryId/${staging_repository_id}
-						</altReleaseDeploymentRepository>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -420,21 +438,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<configuration>
-					<printFailingErrors>true</printFailingErrors>
-					<rulesets>
-						<ruleset>${project.root.basedir}/build/src/main/resources/pmd.xml</ruleset>
-					</rulesets>
-					<excludeFromFailureFile>
-						${project.root.basedir}/build/src/main/resources/pmd-file-exclusions.properties
-					</excludeFromFailureFile>
-					<excludes>
-						<exclude>com/github/cowwoc/requirements11/java/internal/scope/ColorTest.java</exclude>
-					</excludes>
-					<analysisCache>true</analysisCache>
-					<linkXRef>false</linkXRef>
-					<targetJdk>21</targetJdk>
-				</configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -442,6 +445,22 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<includeTests>true</includeTests>
+					<rulesets>
+						<ruleset>${project.root.basedir}/lint/pmd.xml</ruleset>
+						<ruleset>${project.root.basedir}/lint/pmd-main.xml</ruleset>
+					</rulesets>
+					<printFailingErrors>true</printFailingErrors>
+					<excludeFromFailureFile>${project.root.basedir}/lint/pmd-file-exclusions.properties
+					</excludeFromFailureFile>
+					<excludes>
+						<exclude>**/jmh_generated/**</exclude>
+					</excludes>
+					<analysisCache>true</analysisCache>
+					<linkXRef>false</linkXRef>
+					<targetJdk>21</targetJdk>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -471,19 +490,6 @@
 								<id>attach-javadocs</id>
 								<goals>
 									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
 								</goals>
 							</execution>
 						</executions>
