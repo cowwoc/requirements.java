@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.github.cowwoc.requirements</groupId>
 		<artifactId>requirements-benchmark</artifactId>
-		<version>12.0</version>
+		<version>12.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>requirements-benchmark-assertj</artifactId>
 	<name>requirements-benchmark-assertj</name>
