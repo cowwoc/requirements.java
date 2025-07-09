@@ -2,6 +2,10 @@ Minor updates involving cosmetic changes have been omitted from this list.
 
 See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
+## Version 12.1  - 2025/07/09
+
+* Bugfixes: Relocation groupId was set to `io.github.cowwoc.pouch` instead of `io.github.cowwoc.requirements`.
+
 ## Version 12.0 - 2025/06/13
 
 * Breaking changes
