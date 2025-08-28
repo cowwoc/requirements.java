@@ -4,10 +4,10 @@
  */
 package io.github.cowwoc.requirements12.java.validator.component;
 
+import io.github.cowwoc.requirements12.annotation.CheckReturnValue;
 import io.github.cowwoc.requirements12.java.MultipleFailuresException;
 import io.github.cowwoc.requirements12.java.ValidationFailures;
 import io.github.cowwoc.requirements12.java.Validators;
-import io.github.cowwoc.requirements12.annotation.CheckReturnValue;
 
 import java.util.Map;
 import java.util.Optional;
@@ -109,6 +109,7 @@ public interface ValidatorComponent<S, T>
 	 *
 	 * @return an unmodifiable list of failed validations
 	 */
+	@CheckReturnValue
 	ValidationFailures elseGetFailures();
 
 	/**

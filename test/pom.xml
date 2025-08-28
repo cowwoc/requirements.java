@@ -12,7 +12,6 @@
 
 	<properties>
 		<project.root.basedir>${project.parent.basedir}</project.root.basedir>
-		<argLine/>
 	</properties>
 
 	<dependencies>
@@ -76,11 +75,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<trimStackTrace>false</trimStackTrace>
-					<useModulePath>false</useModulePath>
-					<argLine>
-						${argLine} -Dfile.encoding=UTF-8 -ea
-						-da:io.github.cowwoc.requirements12.test.java.AssertionsDisabledTest
-					</argLine>
+					<argLine>-da:io.github.cowwoc.requirements12.test.java.AssertionsDisabledTest</argLine>
 					<!--
 					Tests run faster sequentially than in parallel for me, but they are fast regardless.
 

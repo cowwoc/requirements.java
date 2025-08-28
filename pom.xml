@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.cowwoc.requirements</groupId>
 	<artifactId>requirements</artifactId>
@@ -193,6 +194,7 @@
 							</goals>
 							<!-- Reminder: Use "-pl !test,!benchmark" to exclude test modules -->
 							<configuration>
+								<failOnWarnings>true</failOnWarnings>
 								<show>public</show>
 								<additionalOptions>
 									<!--
@@ -304,7 +306,7 @@
 						</dependency>
 					</dependencies>
 					<configuration>
-						<configLocation>${project.root.basedir}/lint/checkstyle.xml</configLocation>
+						<configLocation>config/checkstyle.xml</configLocation>
 						<consoleOutput>true</consoleOutput>
 						<failOnViolation>true</failOnViolation>
 						<linkXRef>false</linkXRef>
@@ -412,8 +414,8 @@
 						<configuration>
 							<outputDirectory>${project.basedir}</outputDirectory>
 							<thirdPartyFilename>LICENSE-3RD-PARTY.md</thirdPartyFilename>
-							<fileTemplate>${basedir}/licenses/format.ftl</fileTemplate>
-							<missingFile>${basedir}/licenses/missing.txt</missingFile>
+							<fileTemplate>${project.root.basedir}/config/license-maven-plugin.ftl</fileTemplate>
+							<missingFile>${project.root.basedir}/config/missing-licenses.txt</missingFile>
 							<licenseMerges>
 								<licenseMerge>Apache License, Version 2.0|Apache 2.0|Apache-2.0|
 									Apache License, Version 2.0, GNU Lesser General Public License|
@@ -447,11 +449,11 @@
 				<configuration>
 					<includeTests>true</includeTests>
 					<rulesets>
-						<ruleset>${project.root.basedir}/lint/pmd.xml</ruleset>
-						<ruleset>${project.root.basedir}/lint/pmd-main.xml</ruleset>
+						<ruleset>${project.root.basedir}/config/pmd.xml</ruleset>
+						<ruleset>${project.root.basedir}/config/pmd-main.xml</ruleset>
 					</rulesets>
 					<printFailingErrors>true</printFailingErrors>
-					<excludeFromFailureFile>${project.root.basedir}/lint/pmd-file-exclusions.properties
+					<excludeFromFailureFile>${project.root.basedir}/config/pmd-file-exclusions.properties
 					</excludeFromFailureFile>
 					<excludes>
 						<exclude>**/jmh_generated/**</exclude>
