@@ -6,7 +6,7 @@
 [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](docs/changelog.md)
 [![javascript, typescript](https://img.shields.io/badge/other%20languages-javascript,%20typescript-457FD5.svg)](../../../requirements.js)
 
-A [fluent API](https://en.m.wikipedia.org/docs/Fluent_interface) for
+A [fluent API](https://en.wikipedia.org/wiki/Fluent_interface) for
 enforcing [design contracts](https://en.wikipedia.org/docs/Design_by_contract) with
 [automatic message generation](docs/features.md#automatic-message-generation):
 
