@@ -61,7 +61,7 @@ public final class Cake
   {
     return checkIf(bitesTaken, "bitesTaken").isNotNegative().
       and(checkIf(piecesLeft, "piecesLeft").isGreaterThan(3)).
-      elseGetMessages();
+      elseGetFailures();
   }
 }
 ```
@@ -162,7 +162,7 @@ See the [API documentation](https://cowwoc.github.io/requirements.java/12.0/) fo
 
 ## Best practices
 
-* Use `checkIf().elseGetMessages()` to return failure messages without throwing an exception.
+* Use `checkIf().elseGetFailures()` to return failure messages without throwing an exception.
   This is the fastest validation approach, ideal for web services.
 * To enhance the clarity of failure messages, you should provide parameter names, even when they are optional.
   In other words, favor `assert that(value, name)` over `assert that(value)`.
