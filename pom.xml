@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.cowwoc.requirements</groupId>
 	<artifactId>requirements</artifactId>
-	<version>12.1-SNAPSHOT</version>
+	<version>13.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>requirements</name>
 	<description>A fluent API for enforcing design contracts with automatic message generation</description>
@@ -57,15 +57,15 @@
 		<project.root.basedir>${project.basedir}</project.root.basedir>
 		<!--		<license.verbose>true</license.verbose>-->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.version>3.9.9</maven.version>
-		<maven.compiler.release>21</maven.compiler.release>
-		<guava.version>33.4.8-jre</guava.version>
+		<maven.version>3.9.12</maven.version>
+		<maven.compiler.release>25</maven.compiler.release>
+		<guava.version>33.5.0-jre</guava.version>
 		<error_prone_annotations.version>2.26.1</error_prone_annotations.version>
-		<jackson.version>2.19.1</jackson.version>
+		<jackson.version>3.0.3</jackson.version>
 		<slf4j.version>2.0.17</slf4j.version>
 		<testng.version>7.11.0</testng.version>
 		<jmh.version>1.37</jmh.version>
-		<pmd.version>7.14.0</pmd.version>
+		<pmd.version>7.20.0</pmd.version>
 		<checkstyle.plugin.version>3.6.0</checkstyle.plugin.version>
 	</properties>
 
@@ -94,7 +94,7 @@
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-core</artifactId>
-				<version>3.9.10</version>
+				<version>3.9.12</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
@@ -102,7 +102,7 @@
 				<version>${guava.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
+				<groupId>tools.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
 				<version>${jackson.version}</version>
 			</dependency>
@@ -119,17 +119,17 @@
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>1.5.18</version>
+				<version>1.5.24</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.javaparser</groupId>
 				<artifactId>javaparser-core</artifactId>
-				<version>3.27.0</version>
+				<version>3.27.1</version>
 			</dependency>
 			<dependency>
 				<groupId>io.github.java-diff-utils</groupId>
 				<artifactId>java-diff-utils</artifactId>
-				<version>4.15</version>
+				<version>4.16</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
@@ -144,7 +144,7 @@
 			<dependency>
 				<groupId>io.github.cowwoc.pouch</groupId>
 				<artifactId>pouch-core</artifactId>
-				<version>9.0</version>
+				<version>9.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.twdata.maven</groupId>
@@ -159,7 +159,7 @@
 			<dependency>
 				<groupId>org.assertj</groupId>
 				<artifactId>assertj-core</artifactId>
-				<version>3.27.3</version>
+				<version>3.27.6</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -170,22 +170,22 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>3.1.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.14.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
 					<version>3.3.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.14.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.4.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.11.2</version>
+					<version>3.12.0</version>
 					<executions>
 						<execution>
 							<id>default-cli</id>
@@ -212,16 +212,16 @@
 								<links>
 									<link>https://guava.dev/releases/${guava.version}/api/docs/</link>
 									<link>
-										https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/${jackson.version}/
+										https://javadoc.io/doc/tools.jackson.core/jackson-databind/${jackson.version}/
 									</link>
 								</links>
 								<excludePackageNames>
-									io.github.cowwoc.requirements12.java.internal,
-									io.github.cowwoc.requirements12.java.internal.*,
-									io.github.cowwoc.requirements12.guava.internal,
-									io.github.cowwoc.requirements12.guava.internal.*,
-									io.github.cowwoc.requirements12.jackson.internal,
-									io.github.cowwoc.requirements12.jackson.internal.*
+									io.github.cowwoc.requirements13.java.internal,
+									io.github.cowwoc.requirements13.java.internal.*,
+									io.github.cowwoc.requirements13.guava.internal,
+									io.github.cowwoc.requirements13.guava.internal.*,
+									io.github.cowwoc.requirements13.jackson.internal,
+									io.github.cowwoc.requirements13.jackson.internal.*
 								</excludePackageNames>
 							</configuration>
 						</execution>
@@ -230,7 +230,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.5.3</version>
+					<version>3.5.4</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -250,27 +250,27 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.4.2</version>
+					<version>3.5.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.3.1</version>
+					<version>3.4.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>license-maven-plugin</artifactId>
-					<version>2.5.0</version>
+					<version>2.7.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>3.8.1</version>
+					<version>3.9.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-pmd-plugin</artifactId>
-					<version>3.26.0</version>
+					<version>3.28.0</version>
 					<dependencies>
 						<dependency>
 							<groupId>net.sourceforge.pmd</groupId>
@@ -302,7 +302,7 @@
 						<dependency>
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
-							<version>10.25.0</version>
+							<version>11.0.0</version>
 						</dependency>
 					</dependencies>
 					<configuration>
@@ -325,7 +325,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-gpg-plugin</artifactId>
-					<version>3.2.7</version>
+					<version>3.2.8</version>
 					<executions>
 						<execution>
 							<id>sign-artifacts</id>
@@ -342,7 +342,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>versions-maven-plugin</artifactId>
-					<version>2.18.0</version>
+					<version>2.20.1</version>
 					<configuration>
 						<ruleSet>
 							<rules>
@@ -374,7 +374,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.5.0</version>
+				<version>3.6.2</version>
 				<executions>
 					<execution>
 						<id>enforce-maven</id>
@@ -394,7 +394,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<version>3.1.1</version>
+				<version>3.3.1</version>
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<tagNameFormat>release-@{project.version}</tagNameFormat>
@@ -460,7 +460,7 @@
 					</excludes>
 					<analysisCache>true</analysisCache>
 					<linkXRef>false</linkXRef>
-					<targetJdk>21</targetJdk>
+					<targetJdk>25</targetJdk>
 				</configuration>
 			</plugin>
 		</plugins>

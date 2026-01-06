@@ -1,8 +1,6 @@
   # Third-party dependencies
   * Apache License, Version 2.0:
     * [Jackson-annotations](https://github.com/FasterXML/jackson)
-    * [Jackson-core](https://github.com/FasterXML/jackson-core)
-    * [jackson-databind](https://github.com/FasterXML/jackson)
     * [error-prone annotations](https://errorprone.info/error_prone_annotations)
     * [Guava InternalFutureFailureAccess and InternalFutures](https://github.com/google/guava/failureaccess)
     * [Guava: Google Core Libraries for Java](https://github.com/google/guava)
@@ -19,6 +17,8 @@
     * [AssertJ Core](https://assertj.github.io/doc/#assertj-core)
     * [jcommander](https://jcommander.org)
     * [testng](https://testng.org)
+    * [Jackson-core](https://github.com/FasterXML/jackson-core)
+    * [jackson-databind](https://github.com/FasterXML/jackson)
   * Eclipse Public License (EPL), Version 1.0:
     * [Logback Classic Module](http://logback.qos.ch/logback-classic)
     * [Logback Core Module](http://logback.qos.ch/logback-core)

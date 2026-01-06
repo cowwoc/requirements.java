@@ -2,6 +2,13 @@ Minor updates involving cosmetic changes have been omitted from this list.
 
 See https://github.com/cowwoc/requirements.java/commits/main for a full list.
 
+## Version 13.0 - 2026/01/06
+
+* Breaking changes
+    * The library now requires JDK 25.
+    * Upgraded Jackson dependency to 3.0.x.
+    * Renamed the module and package names from `requirements12` to `requirements13`.
+
 ## Version 12.0 - 2025/06/13
 
 * Breaking changes

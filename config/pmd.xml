@@ -79,8 +79,6 @@
 		<exclude name="CognitiveComplexity"/>
 		<exclude name="CyclomaticComplexity"/>
 		<exclude name="NPathComplexity"/>
-		<!-- WORKAROUND: https://github.com/pmd/pmd/issues/5030 -->
-		<exclude name="SwitchDensity"/>
 	</rule>
 	<rule ref="category/java/documentation.xml">
 		<exclude name="UncommentedEmptyConstructor"/>

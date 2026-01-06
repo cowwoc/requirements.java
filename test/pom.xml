@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.github.cowwoc.requirements</groupId>
 		<artifactId>requirements</artifactId>
-		<version>12.1-SNAPSHOT</version>
+		<version>13.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>requirements-test</artifactId>
 	<name>requirements-test</name>
@@ -20,7 +20,7 @@
 			<artifactId>assertj-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
+			<groupId>tools.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
 
@@ -74,13 +74,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<trimStackTrace>false</trimStackTrace>
-					<argLine>-da:io.github.cowwoc.requirements12.test.java.AssertionsDisabledTest</argLine>
+					<argLine>-da:io.github.cowwoc.requirements13.test.java.AssertionsDisabledTest</argLine>
 					<!--
 					Tests run faster sequentially than in parallel for me, but they are fast regardless.
 
-					<parallel>all</parallel>
-					<forkCount>1C</forkCount>
+					<parallel>methods</parallel>
 					-->
 					<properties>
 						<property>

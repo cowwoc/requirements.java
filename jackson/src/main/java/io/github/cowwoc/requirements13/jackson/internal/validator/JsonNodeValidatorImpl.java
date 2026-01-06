@@ -1,0 +1,180 @@
+/*
+ * Copyright (c) 2026 Gili Tzabari
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ */
+package io.github.cowwoc.requirements13.jackson.internal.validator;
+
+import io.github.cowwoc.requirements13.jackson.internal.message.JsonNodeMessages;
+import io.github.cowwoc.requirements13.jackson.validator.JsonNodeValidator;
+import io.github.cowwoc.requirements13.java.ValidationFailure;
+import io.github.cowwoc.requirements13.java.internal.Configuration;
+import io.github.cowwoc.requirements13.java.internal.scope.ApplicationScope;
+import io.github.cowwoc.requirements13.java.internal.util.Pluralizer;
+import io.github.cowwoc.requirements13.java.internal.util.ValidationTarget;
+import io.github.cowwoc.requirements13.java.internal.validator.AbstractObjectValidator;
+import io.github.cowwoc.requirements13.java.internal.validator.ObjectSizeValidatorImpl;
+import io.github.cowwoc.requirements13.java.validator.PrimitiveUnsignedIntegerValidator;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.BigIntegerNode;
+import tools.jackson.databind.node.BooleanNode;
+import tools.jackson.databind.node.ContainerNode;
+import tools.jackson.databind.node.DecimalNode;
+import tools.jackson.databind.node.MissingNode;
+import tools.jackson.databind.node.NumericNode;
+import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.node.StringNode;
+import tools.jackson.databind.node.ValueNode;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+/**
+ * @param <T> the type of the {@code JsonNode}
+ */
+public final class JsonNodeValidatorImpl<T extends JsonNode>
+	extends AbstractObjectValidator<JsonNodeValidator<T>, T>
+	implements JsonNodeValidator<T>
+{
+	/**
+	 * @param scope         the application configuration
+	 * @param configuration the validator configuration
+	 * @param name          the name of the value
+	 * @param value         the value being validated
+	 * @param context       the contextual information set by a parent validator or the user
+	 * @param failures      the list of validation failures
+	 * @throws NullPointerException     if {@code name} is null
+	 * @throws IllegalArgumentException if {@code name} contains whitespace, or is empty
+	 * @throws AssertionError           if {@code scope}, {@code configuration}, {@code value}, {@code context}
+	 *                                  or {@code failures} are null
+	 */
+	public JsonNodeValidatorImpl(ApplicationScope scope, Configuration configuration, String name,
+		ValidationTarget<T> value, Map<String, Optional<Object>> context, List<ValidationFailure> failures)
+	{
+		super(scope, configuration, name, value, context, failures);
+	}
+
+	@Override
+	public JsonNodeValidator<JsonNode> property(String name)
+	{
+		ValidationTarget<JsonNode> newValue = value.nullToInvalid().map(v -> v.get(name)).nullToInvalid();
+		if (!newValue.isValid())
+		{
+			failOnNull();
+			addIllegalArgumentException(
+				JsonNodeMessages.property(this, name).toString());
+		}
+		return new JsonNodeValidatorImpl<>(scope, configuration, this.name + "." + name, newValue, context,
+			failures);
+	}
+
+	@Override
+	public PrimitiveUnsignedIntegerValidator size()
+	{
+		failOnNull();
+		return new ObjectSizeValidatorImpl(scope, configuration, this, name + ".size()",
+			value.nullToInvalid().map(JsonNode::size), Pluralizer.ELEMENT, context, failures);
+	}
+
+	@Override
+	public JsonNodeValidator<NumericNode> isNumber()
+	{
+		isType(JsonNode::isNumber, "a number");
+		return self();
+	}
+
+	/**
+	 * Validates the type of the value.
+	 *
+	 * @param predicate returns {@code true} if the value matches the expected type
+	 * @param type      a description of the expected type (e.g. "a string")
+	 */
+	public void isType(Predicate<T> predicate, String type)
+	{
+		if (value.validationFailed(predicate))
+		{
+			failOnNull();
+			addIllegalArgumentException(
+				JsonNodeMessages.isType(this, type).toString());
+		}
+	}
+
+	@Override
+	public JsonNodeValidator<NumericNode> isIntegralNumber()
+	{
+		isType(JsonNode::isIntegralNumber, "an integral number");
+		return self();
+	}
+
+	@Override
+	public JsonNodeValidator<NumericNode> isFloatingPointNumber()
+	{
+		isType(JsonNode::isFloatingPointNumber, "a float or double number");
+		return self();
+	}
+
+	@Override
+	public JsonNodeValidator<BigIntegerNode> isBigInteger()
+	{
+		isType(JsonNode::isBigInteger, "a whole number");
+		return self();
+	}
+
+	@Override
+	public JsonNodeValidator<DecimalNode> isBigDecimal()
+	{
+		isType(JsonNode::isBigDecimal, "a floating-point number");
+		return self();
+	}
+
+	@Override
+	public JsonNodeValidator<MissingNode> isMissing()
+	{
+		isType(JsonNode::isMissingNode, "a missing node");
+		return self();
+	}
+
+	@Override
+	public JsonNodeValidator<ValueNode> isValue()
+	{
+		isType(JsonNode::isValueNode, "a binary value, boolean, null, number or string");
+		return self();
+	}
+
+	@Override
+	public JsonNodeValidator<ContainerNode<?>> isContainer()
+	{
+		isType(JsonNode::isContainer, "an array or object");
+		return self();
+	}
+
+	@Override
+	public JsonNodeValidator<ArrayNode> isArray()
+	{
+		isType(JsonNode::isArray, "an array");
+		return self();
+	}
+
+	@Override
+	public JsonNodeValidator<ObjectNode> isObject()
+	{
+		isType(JsonNode::isObject, "an object");
+		return self();
+	}
+
+	@Override
+	public JsonNodeValidator<StringNode> isString()
+	{
+		isType(JsonNode::isString, "a String");
+		return self();
+	}
+
+	@Override
+	public JsonNodeValidator<BooleanNode> isBoolean()
+	{
+		isType(JsonNode::isBoolean, "a Boolean");
+		return self();
+	}
+}

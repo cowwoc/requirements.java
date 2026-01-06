@@ -10,36 +10,36 @@
  * invariants</a> of core Java types.
  */
 @SuppressWarnings("JavaModuleNaming")
-module io.github.cowwoc.requirements12.java
+module io.github.cowwoc.requirements13.java
 {
-	requires transitive io.github.cowwoc.requirements12.annotation;
+	requires transitive io.github.cowwoc.requirements13.annotation;
 	requires io.github.javadiffutils;
 	requires io.github.cowwoc.pouch.core;
 	requires org.slf4j;
 
-	exports io.github.cowwoc.requirements12.java;
-	exports io.github.cowwoc.requirements12.java.validator;
-	exports io.github.cowwoc.requirements12.java.validator.component;
+	exports io.github.cowwoc.requirements13.java;
+	exports io.github.cowwoc.requirements13.java.validator;
+	exports io.github.cowwoc.requirements13.java.validator.component;
 
-	exports io.github.cowwoc.requirements12.java.internal to
-		io.github.cowwoc.requirements12.guava, io.github.cowwoc.requirements12.jackson,
-		io.github.cowwoc.requirements12.test, io.github.cowwoc.requirements12.benchmark.java;
-	exports io.github.cowwoc.requirements12.java.internal.scope to
-		io.github.cowwoc.requirements12.guava, io.github.cowwoc.requirements12.jackson,
-		io.github.cowwoc.requirements12.test;
-	exports io.github.cowwoc.requirements12.java.internal.util to
-		io.github.cowwoc.requirements12.guava, io.github.cowwoc.requirements12.jackson,
-		io.github.cowwoc.requirements12.test;
-	exports io.github.cowwoc.requirements12.java.internal.terminal to
-		io.github.cowwoc.requirements12.test;
-	exports io.github.cowwoc.requirements12.java.internal.validator to
-		io.github.cowwoc.requirements12.guava, io.github.cowwoc.requirements12.jackson,
-		io.github.cowwoc.requirements12.test, io.github.cowwoc.requirements12.benchmark.java;
-	exports io.github.cowwoc.requirements12.java.internal.message to
-		io.github.cowwoc.requirements12.guava, io.github.cowwoc.requirements12.test;
-	exports io.github.cowwoc.requirements12.java.internal.message.diff to
-		io.github.cowwoc.requirements12.test;
-	exports io.github.cowwoc.requirements12.java.internal.message.section to
-		io.github.cowwoc.requirements12.guava, io.github.cowwoc.requirements12.jackson,
-		io.github.cowwoc.requirements12.test;
+	exports io.github.cowwoc.requirements13.java.internal to
+		io.github.cowwoc.requirements13.guava, io.github.cowwoc.requirements13.jackson,
+		io.github.cowwoc.requirements13.test, io.github.cowwoc.requirements13.benchmark.java;
+	exports io.github.cowwoc.requirements13.java.internal.scope to
+		io.github.cowwoc.requirements13.guava, io.github.cowwoc.requirements13.jackson,
+		io.github.cowwoc.requirements13.test;
+	exports io.github.cowwoc.requirements13.java.internal.util to
+		io.github.cowwoc.requirements13.guava, io.github.cowwoc.requirements13.jackson,
+		io.github.cowwoc.requirements13.test;
+	exports io.github.cowwoc.requirements13.java.internal.terminal to
+		io.github.cowwoc.requirements13.test;
+	exports io.github.cowwoc.requirements13.java.internal.validator to
+		io.github.cowwoc.requirements13.guava, io.github.cowwoc.requirements13.jackson,
+		io.github.cowwoc.requirements13.test, io.github.cowwoc.requirements13.benchmark.java;
+	exports io.github.cowwoc.requirements13.java.internal.message to
+		io.github.cowwoc.requirements13.guava, io.github.cowwoc.requirements13.test;
+	exports io.github.cowwoc.requirements13.java.internal.message.diff to
+		io.github.cowwoc.requirements13.test;
+	exports io.github.cowwoc.requirements13.java.internal.message.section to
+		io.github.cowwoc.requirements13.guava, io.github.cowwoc.requirements13.jackson,
+		io.github.cowwoc.requirements13.test;
 }

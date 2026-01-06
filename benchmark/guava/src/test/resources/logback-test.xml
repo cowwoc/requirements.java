@@ -8,5 +8,5 @@
 	<root level="debug">
 		<appender-ref ref="STDOUT"/>
 	</root>
-	<logger name="io.github.cowwoc.requirements12.java.internal.terminal.Terminal" level="warn"/>
+	<logger name="io.github.cowwoc.requirements13.java.internal.terminal.Terminal" level="warn"/>
 </configuration>
