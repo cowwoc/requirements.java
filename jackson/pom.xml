@@ -57,11 +57,10 @@
 								<option>summary</option>
 							</additionalOptions>
 							<validateLinks>true</validateLinks>
-							<links>
-								<!-- BUG: https://github.com/maxcellent/javadoc.io/issues/200 -->
-								<link>https://javadoc.io/doc/tools.jackson.core/jackson-databind/${jackson.version}/
-								</link>
-							</links>
+							<!--
+							Cannot link to Jackson's Javadoc due to
+							https://github.com/apache/maven-javadoc-plugin/issues/1167.
+							-->
 							<offlineLinks>
 								<offlineLink>
 									<url>https://cowwoc.github.io/requirements.java/${project.version}/</url>

@@ -209,12 +209,10 @@
 									<option>summary</option>
 								</additionalOptions>
 								<validateLinks>true</validateLinks>
-								<links>
-									<link>https://guava.dev/releases/${guava.version}/api/docs/</link>
-									<link>
-										https://javadoc.io/doc/tools.jackson.core/jackson-databind/${jackson.version}/
-									</link>
-								</links>
+								<!--
+								Cannot link to Guava or Jackson's Javadoc due to
+								https://github.com/apache/maven-javadoc-plugin/issues/1167.
+								-->
 								<excludePackageNames>
 									io.github.cowwoc.requirements13.java.internal,
 									io.github.cowwoc.requirements13.java.internal.*,
