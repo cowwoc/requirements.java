@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.cowwoc.requirements</groupId>
 	<artifactId>requirements</artifactId>
-	<version>13.1-SNAPSHOT</version>
+	<version>13.1</version>
 	<packaging>pom</packaging>
 	<name>requirements</name>
 	<description>A fluent API for enforcing design contracts with automatic message generation</description>
@@ -21,7 +21,7 @@
 		<url>https://github.com/cowwoc/requirements.java/</url>
 		<connection>scm:git:https://github.com/cowwoc/requirements.java/</connection>
 		<developerConnection>scm:git:https://github.com/cowwoc/requirements.java/</developerConnection>
-		<tag>HEAD</tag>
+		<tag>release-13.1</tag>
 	</scm>
 
 	<developers>
