@@ -156,7 +156,7 @@ jobs:
           
           VERSION=${{ needs.tag-release.outputs.VERSION }}
           rm -rf docs/api/${VERSION}
-          mkdir --parents docs/api/${VERSION}
+          mkdir --parents docs/api
           mv bundles/requirements-bundle/work/requirements.java/requirements.java/docs/api/${VERSION} \
             docs/api/${VERSION}
           rm -rf bundles
