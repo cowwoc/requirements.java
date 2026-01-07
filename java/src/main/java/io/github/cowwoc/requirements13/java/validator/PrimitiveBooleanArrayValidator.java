@@ -1,6 +1,6 @@
 
 /*
- * Copyright (c) 2026 Gili Tzabari
+ * Copyright (c) 2023 Gili Tzabari
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 package io.github.cowwoc.requirements13.java.validator;
