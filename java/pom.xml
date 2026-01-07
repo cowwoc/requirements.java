@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.github.cowwoc.requirements</groupId>
 		<artifactId>requirements</artifactId>
-		<version>13.1</version>
+		<version>13.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>requirements-java</artifactId>
 	<name>requirements-java</name>
