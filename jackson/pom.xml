@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>io.github.cowwoc.requirements</groupId>
@@ -56,10 +57,10 @@
 								<option>summary</option>
 							</additionalOptions>
 							<validateLinks>true</validateLinks>
-							<!--
-							Cannot link to Jackson's Javadoc due to
-							https://github.com/apache/maven-javadoc-plugin/issues/1167.
-							-->
+							<links>
+								<link>https://javadoc.io/doc/tools.jackson.core/jackson-databind/${jackson.version}/
+								</link>
+							</links>
 							<offlineLinks>
 								<offlineLink>
 									<url>https://cowwoc.github.io/requirements.java/${project.version}/</url>
