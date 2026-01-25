@@ -2,7 +2,7 @@
 [![build-status](../../workflows/Build/badge.svg)](../../actions?query=workflow%3ABuild)
 [![Maven Central](https://maven-badges.sml.io/sonatype-central/io.github.cowwoc.requirements/requirements/badge.svg)](https://central.sonatype.com/search?q=g:io.github.cowwoc.requirements)
 <br>
-[![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/13.1/)
+[![API](https://img.shields.io/badge/api_docs-5B45D5.svg)](https://cowwoc.github.io/requirements.java/13.2/)
 [![Changelog](https://img.shields.io/badge/changelog-A345D5.svg)](docs/changelog.md)
 [![javascript, typescript](https://img.shields.io/badge/other%20languages-javascript,%20typescript-457FD5.svg)](../../../requirements.js)
 
@@ -21,7 +21,7 @@ To get started, add this Maven dependency:
 <dependency>
   <groupId>io.github.cowwoc.requirements</groupId>
   <artifactId>requirements-java</artifactId>
-  <version>13.1</version>
+  <version>13.2</version>
 </dependency>
 ```
 
@@ -151,14 +151,14 @@ This library offers the following features:
 Designed for discovery using your favorite IDE's auto-complete feature.
 The main entry points are:
 
-* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/13.1/io.github.cowwoc.requirements.java/com/github/cowwoc/requirements13/java/DefaultJavaValidators.html#requireThat(T,java.lang.String))
+* [requireThat(value, name)](https://cowwoc.github.io/requirements.java/13.2/io.github.cowwoc.requirements.java/com/github/cowwoc/requirements13/java/DefaultJavaValidators.html#requireThat(T,java.lang.String))
   for method preconditions.
-* [that(value, name)](https://cowwoc.github.io/requirements.java/13.1/io.github.cowwoc.requirements.java/com/github/cowwoc/requirements13/java/DefaultJavaValidators.html#that(T,java.lang.String))
+* [that(value, name)](https://cowwoc.github.io/requirements.java/13.2/io.github.cowwoc.requirements.java/com/github/cowwoc/requirements13/java/DefaultJavaValidators.html#that(T,java.lang.String))
   for [class invariants, method postconditions and private methods](docs/features.md#assertion-support).
-* [checkIf(value, name)](https://cowwoc.github.io/requirements.java/13.1/io.github.cowwoc.requirements.java/com/github/cowwoc/requirements13/java/DefaultJavaValidators.html#checkIf(T,java.lang.String))
+* [checkIf(value, name)](https://cowwoc.github.io/requirements.java/13.2/io.github.cowwoc.requirements.java/com/github/cowwoc/requirements13/java/DefaultJavaValidators.html#checkIf(T,java.lang.String))
   for multiple failures and customized error handling.
 
-See the [API documentation](https://cowwoc.github.io/requirements.java/13.1/) for more details.
+See the [API documentation](https://cowwoc.github.io/requirements.java/13.2/) for more details.
 
 ## Best practices
 
