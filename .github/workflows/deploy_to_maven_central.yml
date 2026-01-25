@@ -83,7 +83,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       ID: ${{ steps.upload.outputs.ID }}
-      NEW_REF_POSITION: ${{ steps.commit-docs.outputs.NEW_REF_POSITION }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -202,6 +201,26 @@ jobs:
           
           echo "ID=${ID}" >> $GITHUB_OUTPUT
 
+      - name: Commit documentation
+        id: commit-docs
+        run: |
+          VERSION=${{ needs.tag-release.outputs.VERSION }}
+          git add docs/api/${VERSION}
+          git commit -m "Publishing documentation for version ${VERSION}"
+          git push
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "docs/api"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
       - name: Poll for deployment status
         env:
           MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
@@ -247,37 +266,6 @@ jobs:
             echo "Unexpected response code: ${response}"
             exit 1
           fi
-
-      - name: Commit documentation
-        id: commit-docs
-        run: |
-          VERSION=${{ needs.tag-release.outputs.VERSION }}
-          git add docs/api/${VERSION}
-          git commit -m "Publishing documentation for version ${VERSION}"
-          echo "NEW_REF_POSITION=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          git push
-
-  document:
-    name: Document
-    needs: deploy
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.deploy.outputs.NEW_REF_POSITION }}
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "docs/api"
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
 
   on-failure:
     name: On failure

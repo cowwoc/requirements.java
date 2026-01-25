@@ -4,7 +4,7 @@
  */
 package io.github.cowwoc.requirements13.java.internal.validator;
 
-import io.github.cowwoc.pouch.core.WrappedCheckedException;
+import io.github.cowwoc.pouch10.core.WrappedCheckedException;
 import io.github.cowwoc.requirements13.java.ValidationFailure;
 import io.github.cowwoc.requirements13.java.internal.Configuration;
 import io.github.cowwoc.requirements13.java.internal.util.Exceptions;

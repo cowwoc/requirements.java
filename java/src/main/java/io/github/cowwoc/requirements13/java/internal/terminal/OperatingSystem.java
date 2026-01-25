@@ -4,8 +4,8 @@
  */
 package io.github.cowwoc.requirements13.java.internal.terminal;
 
-import io.github.cowwoc.pouch.core.ConcurrentLazyReference;
-import io.github.cowwoc.pouch.core.Reference;
+import io.github.cowwoc.pouch10.core.ConcurrentLazyReference;
+import io.github.cowwoc.pouch10.core.Reference;
 
 import java.io.IOException;
 import java.util.Locale;

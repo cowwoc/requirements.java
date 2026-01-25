@@ -4,9 +4,9 @@
  */
 package io.github.cowwoc.requirements13.java.internal;
 
-import io.github.cowwoc.pouch.core.WrappedCheckedException;
-import io.github.cowwoc.requirements13.java.ValidationFailures;
+import io.github.cowwoc.pouch10.core.WrappedCheckedException;
 import io.github.cowwoc.requirements13.annotation.CheckReturnValue;
+import io.github.cowwoc.requirements13.java.ValidationFailures;
 
 import java.util.function.Function;
 

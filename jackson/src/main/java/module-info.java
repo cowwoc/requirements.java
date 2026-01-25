@@ -15,7 +15,7 @@ module io.github.cowwoc.requirements13.jackson
 	requires transitive io.github.cowwoc.requirements13.annotation;
 	requires transitive io.github.cowwoc.requirements13.java;
 	requires transitive tools.jackson.databind;
-	requires io.github.cowwoc.pouch.core;
+	requires io.github.cowwoc.pouch10.core;
 
 	exports io.github.cowwoc.requirements13.jackson;
 	exports io.github.cowwoc.requirements13.jackson.internal.validator to io.github.cowwoc.requirements13.test;

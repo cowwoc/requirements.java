@@ -4,7 +4,7 @@
  */
 package io.github.cowwoc.requirements13.java.internal.scope;
 
-import io.github.cowwoc.pouch.core.Scope;
+import io.github.cowwoc.pouch10.core.Scope;
 import io.github.cowwoc.requirements13.java.internal.terminal.Terminal;
 
 /**

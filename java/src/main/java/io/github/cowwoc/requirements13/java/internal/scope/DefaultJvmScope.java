@@ -4,7 +4,7 @@
  */
 package io.github.cowwoc.requirements13.java.internal.scope;
 
-import io.github.cowwoc.pouch.core.AbstractScope;
+import io.github.cowwoc.pouch10.core.AbstractScope;
 import io.github.cowwoc.requirements13.java.internal.terminal.Terminal;
 
 import java.time.Duration;

@@ -61,9 +61,9 @@
 		<maven.compiler.release>25</maven.compiler.release>
 		<guava.version>33.5.0-jre</guava.version>
 		<error_prone_annotations.version>2.26.1</error_prone_annotations.version>
-		<jackson.version>3.0.3</jackson.version>
+		<jackson.version>3.0.4</jackson.version>
 		<slf4j.version>2.0.17</slf4j.version>
-		<testng.version>7.11.0</testng.version>
+		<testng.version>7.12.0</testng.version>
 		<jmh.version>1.37</jmh.version>
 		<pmd.version>7.20.0</pmd.version>
 		<checkstyle.plugin.version>3.6.0</checkstyle.plugin.version>
@@ -119,12 +119,7 @@
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>1.5.24</version>
-			</dependency>
-			<dependency>
-				<groupId>com.github.javaparser</groupId>
-				<artifactId>javaparser-core</artifactId>
-				<version>3.27.1</version>
+				<version>1.5.25</version>
 			</dependency>
 			<dependency>
 				<groupId>io.github.java-diff-utils</groupId>
@@ -144,7 +139,7 @@
 			<dependency>
 				<groupId>io.github.cowwoc.pouch</groupId>
 				<artifactId>pouch-core</artifactId>
-				<version>9.1</version>
+				<version>10.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.twdata.maven</groupId>
@@ -159,7 +154,7 @@
 			<dependency>
 				<groupId>org.assertj</groupId>
 				<artifactId>assertj-core</artifactId>
-				<version>3.27.6</version>
+				<version>3.27.7</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

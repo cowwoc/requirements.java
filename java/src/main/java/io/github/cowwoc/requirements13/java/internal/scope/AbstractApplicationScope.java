@@ -4,9 +4,9 @@
  */
 package io.github.cowwoc.requirements13.java.internal.scope;
 
-import io.github.cowwoc.pouch.core.AbstractScope;
-import io.github.cowwoc.pouch.core.ConcurrentLazyReference;
-import io.github.cowwoc.pouch.core.Reference;
+import io.github.cowwoc.pouch10.core.AbstractScope;
+import io.github.cowwoc.pouch10.core.ConcurrentLazyReference;
+import io.github.cowwoc.pouch10.core.Reference;
 import io.github.cowwoc.requirements13.java.GlobalConfiguration;
 import io.github.cowwoc.requirements13.java.JavaValidators;
 import io.github.cowwoc.requirements13.java.internal.Configuration;

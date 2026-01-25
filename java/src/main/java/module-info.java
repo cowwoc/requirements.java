@@ -14,7 +14,7 @@ module io.github.cowwoc.requirements13.java
 {
 	requires transitive io.github.cowwoc.requirements13.annotation;
 	requires io.github.javadiffutils;
-	requires io.github.cowwoc.pouch.core;
+	requires io.github.cowwoc.pouch10.core;
 	requires org.slf4j;
 
 	exports io.github.cowwoc.requirements13.java;

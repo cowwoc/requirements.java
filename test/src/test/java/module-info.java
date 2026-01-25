@@ -7,7 +7,7 @@ module io.github.cowwoc.requirements13.test
 {
 	requires io.github.cowwoc.requirements13.guava;
 	requires io.github.cowwoc.requirements13.jackson;
-	requires io.github.cowwoc.pouch.core;
+	requires io.github.cowwoc.pouch10.core;
 	requires com.google.common;
 	requires org.testng;
 	requires org.slf4j;

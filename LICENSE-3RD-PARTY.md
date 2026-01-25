@@ -9,6 +9,7 @@
     * [pouch-core](https://github.com/cowwoc/pouch/pouch-core/)
     * [requirements-annotation](https://github.com/cowwoc/requirements.java/requirements-annotation/)
     * [requirements-guava](https://github.com/cowwoc/requirements.java/requirements-guava/)
+    * [requirements-jackson](https://github.com/cowwoc/requirements.java/requirements-jackson/)
     * [requirements-java](https://github.com/cowwoc/requirements.java/requirements-java/)
     * [java-diff-utils](https://github.com/java-diff-utils/java-diff-utils/java-diff-utils)
     * [Byte Buddy (without dependencies)](https://bytebuddy.net/byte-buddy)
