@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.github.cowwoc.requirements</groupId>
 		<artifactId>requirements-benchmark</artifactId>
-		<version>13.2-SNAPSHOT</version>
+		<version>13.2</version>
 	</parent>
 	<artifactId>requirements-benchmark-guava</artifactId>
 	<name>requirements-benchmark-guava</name>
